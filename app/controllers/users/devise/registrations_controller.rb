@@ -3,6 +3,7 @@
 class Users::Devise::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
+  before_action :create_random_eid
 
   # GET /resource/sign_up
   # def new
@@ -59,4 +60,10 @@ class Users::Devise::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+
+  # ユーザ固有の:elastic_id初期値を生成
+  def create_random_eid
+    require 'securerandom'
+    @eid = SecureRandom.alphanumeric(10)
+  end
 end
