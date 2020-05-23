@@ -1,0 +1,15 @@
+<header>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-3 text-center">Bookself</div>
+      <div class="col-sm-9 text-right">
+        <% if user_signed_in? %>
+          <%= current_user.name %>
+        <% else %>
+          <%= link_to "ログイン", new_user_session_path %>
+          <%= link_to "新規登録", new_user_registration_path %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</header>
