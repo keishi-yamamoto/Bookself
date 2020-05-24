@@ -14,10 +14,11 @@ Rails.application.routes.draw do
       sessions: "users/devise/sessions"
   }
 
-  namespace :users do
-    resources :book_shelves
+  scope module: :users do
+    get 'users/search_id'
     resources :users
   end
+
 
   devise_for :admins, controllers: {
     sessions: "admins/devise/sessions",
