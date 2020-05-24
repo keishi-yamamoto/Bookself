@@ -1,9 +1,25 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: {
-    sessions: "users/devise/sessions",
-    passwords: "users/devise/passwords",
-    registrations: "users/devise/registrations"
+  root 'users/users#top'
+
+  devise_for :users,
+    path: '',
+    path_names: {
+      sign_up: '',
+      sign_in: 'login',
+      sign_out: 'logout',
+      registration: "signup",
+  },
+    controllers: {
+      registrations: "users/devise/registrations",
+      sessions: "users/devise/sessions"
   }
+
+  scope module: :users do
+    get 'users/search_id'
+    resources :users
+  end
+
+
   devise_for :admins, controllers: {
     sessions: "admins/devise/sessions",
     passwords: "adminss/devise/passwords",
