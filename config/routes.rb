@@ -14,8 +14,9 @@ Rails.application.routes.draw do
       sessions: "users/devise/sessions"
   }
 
-  namespace :users do
-    resources :book_shelves
+  scope module: :users do
+    get 'users/search_id'
+    get 'users/search_mail'
     resources :users
   end
 
