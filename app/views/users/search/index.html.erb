@@ -1,0 +1,8 @@
+<% if @results['count'] != 0 %>
+  <% @results['Items'].each do |item| %>
+    <%= item['title'] %><br>
+  <% end %>
+  
+<% else %>
+  検索しましたが何も見つかりませんでした
+<% end %>

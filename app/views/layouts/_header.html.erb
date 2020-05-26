@@ -1,11 +1,17 @@
 <header>
   <div class="container">
     <div class="row">
-      <div class="col-sm-3 text-center">Bookself</div>
+      <div class="col-sm-3 text-center">
+        <%= link_to "Bookself", root_path %>
+      </div>
       <div class="col-sm-9 text-right">
         <% if user_signed_in? %>
           <%= current_user.name %>
           <%= link_to "ログアウト", destroy_user_session_path, method: :delete %>
+          <%= form_tag(rakuten_api_path, method: :get) do %>
+            <%= text_field_tag :keyword, params[:keyword], placeholder: "Search" %>
+            <%= submit_tag "検索", :name => nil %>
+          <% end %>
         <% else %>
           <%= link_to "ログイン", new_user_session_path %>
           <%= link_to "新規登録", new_user_registration_path %>
