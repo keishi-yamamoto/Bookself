@@ -1,8 +1,28 @@
-<% if @results['count'] != 0 %>
-  <% @results['Items'].each do |item| %>
-    <%= item['title'] %><br>
-  <% end %>
-  
+<% if @results %>
+  <div class="col-10 offset-1">
+    <table class="table table-borderd">
+      <thead>
+        <tr>
+          <td></td>
+          <td>書籍情報</td>
+          <td>発売日</td>
+        </tr>
+      </thead>
+      <% @results.each do |item| %>
+        <tbody>
+          <tr>
+            <td><%= image_tag item['mediumImageUrl'] %></td>
+            <td>
+              <%= item['title'] %><br>
+              <%= item['author'] %><br>
+              <%= item['publisherName'] %>
+            </td>
+            <td><%= item['salesDate'] %></td>
+          </tr>
+        </tbody>
+      <% end %>
+    </table>
+  </div>
 <% else %>
   検索しましたが何も見つかりませんでした
 <% end %>
