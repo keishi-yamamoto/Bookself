@@ -1,0 +1,21 @@
+<h2>登録タイトル一覧</h2>
+<table class="table bordered">
+  <thead>
+    <tr>
+      <td>タイトル</td>
+      <td>著者</td>
+      <td>出版社</td>
+      <td>既刊数</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @titles.each do |title| %>
+      <tr>
+        <td><%= title.name %></td>
+        <td><%= title.author %></td>
+        <td><%= title.publisher %></td>
+        <td><%= title.total_amount %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

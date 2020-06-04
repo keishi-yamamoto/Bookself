@@ -17,6 +17,9 @@ Rails.application.routes.draw do
   scope module: :users do
     get 'search/search_api', as: 'rakuten-api'
     get 'search/index', as: 'result'
+    get 'search/book_title',  as: 'search-title'
+    get 'search/new_title', as: 'register-title', to: 'search#new'
+    resources :titles
     get 'users/search_id'
     get 'users/search_mail'
     resources :users

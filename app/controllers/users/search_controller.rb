@@ -11,11 +11,26 @@ class Users::SearchController < ApplicationController
       json = Net::HTTP.get(uri)
       @results = date_prefix(JSON.parse(json))
       sort_by_date(@results)
+      split_title(@items)
     end
     render :index
   end
 
   def index
+  end
+
+  def book_title
+    title = params[:title].split(',')
+    @items = []
+    n = 0
+    title.count.times do
+      @items.push(Titles.where('name like ?', "%#{title[n]}%"))
+      n += 1
+    end
+  end
+
+  def create
+
   end
 
   private
@@ -45,6 +60,19 @@ class Users::SearchController < ApplicationController
         if Date.today > item['salesDate']
           @items.push(item)
         end
+      end
+    end
+  end
+
+  # 書籍タイトルの分割
+  def split_title(results)
+    if results
+      @titles = []
+      results.each do |item|
+        title = item['title']
+        # 全角スペースを半角に,半角スペースで区切る
+        title = item['title'].gsub(/\p{blank}/,' ').split(' ')
+        @titles.push(title)
       end
     end
   end
