@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_23_044234) do
+ActiveRecord::Schema.define(version: 2020_06_04_072332) do
 
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -22,17 +22,6 @@ ActiveRecord::Schema.define(version: 2020_05_23_044234) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
-  end
-
-  create_table "book_series", force: :cascade do |t|
-    t.integer "book_shelf_id"
-    t.string "name", null: false
-    t.string "author"
-    t.string "publisher"
-    t.integer "total_amount"
-    t.integer "amount"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "book_shelves", force: :cascade do |t|
@@ -55,6 +44,15 @@ ActiveRecord::Schema.define(version: 2020_05_23_044234) do
     t.integer "user_id", null: false
     t.integer "book_id", null: false
     t.string "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "titles", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "author"
+    t.string "publisher"
+    t.integer "total_amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
