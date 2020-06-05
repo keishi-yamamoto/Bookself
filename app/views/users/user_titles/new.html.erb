@@ -1,2 +1,22 @@
-title = <%=@title%>
-id = <%=@id%>
+<div class="container">
+  <div class="row">
+    <%= form_with(model: @user_title, local: true) do |f| %>
+      <h4><%= @row_title %></h4>
+      <div class="form-group row">
+        <%= f.label "書籍タイトル" %>
+        <%= f.text_field :name, value: @book.name, class:"form form-control" %>
+      </div>
+      <div class="form-group row">
+        <%= f.label "著者名" %>
+        <%= f.text_field :author, value: @book.author, class:"form form-control", disabled: true %>
+      </div>
+      <div class="form-group row">
+        <%= f.label "出版社" %>
+        <%= f.text_field :publisher, value: @book.publisher, class:"form form-control", disabled: true %>
+      </div>
+      <%# 登録本棚選択・新規作成セレクトタブ %>
+      <%# 登録巻数入力（つまみやallなどもあればよし) %>
+      <%# 巻数がひとつでもあれば所持しているという方式に変えるべきか？ %>
+    <% end %>
+  </div>
+</div>

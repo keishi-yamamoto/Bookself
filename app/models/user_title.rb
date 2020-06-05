@@ -1,4 +1,5 @@
 class UserTitle < ApplicationRecord
-  belongs_to :book_shelf
+  belongs_to :user
   belongs_to :title
+  has_many :book_shelves
 end

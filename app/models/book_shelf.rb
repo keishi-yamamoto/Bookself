@@ -1,4 +1,3 @@
 class BookShelf < ApplicationRecord
-  belongs_to :user
-  has_many :user_titles
+  belongs_to :user_title
 end

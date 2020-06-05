@@ -12,14 +12,14 @@
         <% @items.each_with_index do |item,i| %>
           <tr id="row-<%= i %>" class="item">
             <td><%= image_tag item['mediumImageUrl'] %></td>
-            <td>
-              <%= item['title'] %><br>
-              <%= item['author'] %><br>
-              <%= item['publisherName'] %><br>
-              <%# js側に送るためのデータ %>
-              <div id="tag-info-<%= i %>" data-title="<%= @titles[i] %>"></div>
+            <td id="book-info-<%= i %>">
+              <p id="book-title-<%= i %>"><%= item['title'] %></p>
+              <p id="book-author-<%= i %>"><%= item['author'] %></p>
+              <p id="book-publisher-<%= i %>"><%= item['publisherName'] %></p>
             </td>
             <td><%= item['salesDate'] %></td>
+            <%# js側に送るためのデータ %>
+            <div id="tag-info-<%= i %>" data-title="<%= @titles[i] %>"></div>
           </tr>
         <% end %>
       </tbody>

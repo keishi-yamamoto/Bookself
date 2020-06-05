@@ -1,11 +1,23 @@
 class Users::UserTitlesController < ApplicationController
   def new
-    @title = params[:title]
-    @id = params[:id]
-    # 新規タイトル登録のときのみ重複しているか検索する
-    if @id = "null" && Title.find_by(name: @title).present?
-      @id = Title.find_by(name: @title).id
+    if params[:option] = "new"
+      @title = params[:title]
+      # 登録する書籍が既に存在するかどうかチェック
+      if Title.find_by(name: @title).present?
+        @book = Title.find_by(name: @title)
+      else
+        # API検索結果による元の書籍名
+        @row_title = params[:row_title]
+        # 新規タイトル作成
+        @book = Title.new(
+          name: params[:title],
+          author: params[:author],
+          publisher: params[:publisher],
+        )
+      end
+    else
+      @book = Title.find_by(params[:id])
     end
-    UserTitle.new
+    @user_title = current_user.user_titles.new
   end
 end

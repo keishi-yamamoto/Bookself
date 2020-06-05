@@ -17,6 +17,8 @@ document.addEventListener('turbolinks:load', function () {
       search(i);
     });
   };
+  const test = document.getElementById('book-title-2');
+  console.log(test.textContent);
   function search(i) {
     // モーダルの表示文
     const body = document.getElementById('modal-text');
@@ -51,8 +53,7 @@ document.addEventListener('turbolinks:load', function () {
               // json形式で取得した後配列に直す
               titleContent[ n ] = document.createTextNode(JSON.stringify(JSON.parse(xhr.response)[ n ][ "name" ]).replace(/\"/g, ""));
               titleTag[ n ].appendChild(titleContent[ n ]);
-              titleTag[ n ].setAttribute('id', 'title-' + n);
-              titleTag[ n ].setAttribute('class', 'title');
+              titleTag[ n ].setAttribute('class', 'title-exist');
               // 見つかった登録書籍のidをdata属性に追加
               titleTag[ n ].setAttribute('data', JSON.stringify(JSON.parse(xhr.response)[ n ][ "id" ]).replace(/\"/g, ""));
               parentDiv.insertBefore(titleTag[ n ], header_tag_1.nextSibling);
@@ -60,7 +61,7 @@ document.addEventListener('turbolinks:load', function () {
           }
           // 新規登録用タイトルタグ
           header_tag_2 = document.createElement('h5');
-          header_content_2 = document.createTextNode('新しく登録する')
+          header_content_2 = document.createTextNode('新しく登録する(シリーズ名を選んでください)')
           header_tag_2.appendChild(header_content_2);
           header_tag_2.setAttribute('id', 'header2');
           parentDiv.appendChild(header_tag_2);
@@ -75,18 +76,29 @@ document.addEventListener('turbolinks:load', function () {
             row_title += (data[ i ])[ m ];
             content = document.createTextNode(row_title);
             title_row.appendChild(content);
-            title_row.setAttribute('id', 'title-row-' + m);
-            title_row.setAttribute('class', 'title');
+            title_row.setAttribute('class', 'title-new');
             parentDiv.appendChild(title_row);
           }
           // Bootstrapのmodal起動(jQuery必要)
           $('#Modal').modal('show');
           // 各タイトルにリンク付与
-          titles = document.getElementsByClassName('title');
+          titles = document.getElementsByClassName('title-exist');
           for (let o = 0; o < titles.length; o++) {
             title = titles[ o ];
             title.addEventListener('click', function () {
-              window.location.href = '/user_titles/new?title=' + this.textContent + '&id=' + this.getAttribute('data');
+              window.location.href =
+                '/user_titles/new?option=exist&id=' + this.getAttribute('data');
+            });
+          }
+          titlesNew = document.getElementsByClassName('title-new');
+          for (let p = 0; p < titlesNew.length; p++) {
+            title = titlesNew[ p ];
+            title.addEventListener('click', function () {
+              window.location.href =
+                '/user_titles/new?option=new&title=' + this.textContent
+                + '&row_title=' + document.getElementById('book-title-' + i).textContent
+                + '&author=' + document.getElementById('book-author-' + i).textContent
+                + '&publisher=' + document.getElementById('book-publisher-' + i).textContent;
             });
           }
         } else {
