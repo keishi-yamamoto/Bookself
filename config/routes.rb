@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     get 'search/index', as: 'result'
     get 'search/book_title',  as: 'search-title'
     get 'search/new_title', as: 'register-title', to: 'search#new'
+    resources :user_titles
     resources :titles
     get 'users/search_id'
     get 'users/search_mail'

@@ -24,9 +24,20 @@ class Users::SearchController < ApplicationController
     @items = []
     n = 0
     title.count.times do
-      @items.push(Titles.where('name like ?', "%#{title[n]}%"))
+      results = Title.where('name like ?', "%#{title[n]}%")
+      if results.present?
+        # 存在する書籍をすべて@itemsに追加する
+        i = 0
+        results.count.times do
+          @items.push(results[i])
+          i += 1
+        end
+      end
       n += 1
     end
+    # 重複して追加したものを削除
+    @items.uniq!
+    render json: @items
   end
 
   def create
