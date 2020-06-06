@@ -4,7 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  has_many :book_shelves, dependent: :destroy
   # 退会しても本に対するpostは残る
   has_many :posts, dependent: :nullify
-  has_many :user_titles
+  has_many :user_titles, dependent: :destroy
 end

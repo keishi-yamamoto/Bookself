@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     get 'search/new_title', as: 'register-title', to: 'search#new'
     resources :user_titles
     resources :titles
+    resources :book_shelves
     get 'users/search_id'
     get 'users/search_mail'
     resources :users

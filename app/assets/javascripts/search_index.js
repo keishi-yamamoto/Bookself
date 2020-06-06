@@ -87,7 +87,7 @@ document.addEventListener('turbolinks:load', function () {
             title = titles[ o ];
             title.addEventListener('click', function () {
               window.location.href =
-                '/user_titles/new?option=exist&id=' + this.getAttribute('data');
+                '/user_titles/new?id=' + this.getAttribute('data');
             });
           }
           titlesNew = document.getElementsByClassName('title-new');
@@ -95,7 +95,7 @@ document.addEventListener('turbolinks:load', function () {
             title = titlesNew[ p ];
             title.addEventListener('click', function () {
               window.location.href =
-                '/user_titles/new?option=new&title=' + this.textContent
+                '/user_titles/new?title=' + this.textContent
                 + '&row_title=' + document.getElementById('book-title-' + i).textContent
                 + '&author=' + document.getElementById('book-author-' + i).textContent
                 + '&publisher=' + document.getElementById('book-publisher-' + i).textContent;

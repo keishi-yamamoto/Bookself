@@ -1,0 +1,8 @@
+<% if @user_titles.present? %>
+  <% @user_titles.each do |user_title| %>
+    <%= user_title.id %>
+    <%= user_title.title.name %>
+  <% end %>
+<% else %>
+  登録されているタイトルはありません。
+<% end %>

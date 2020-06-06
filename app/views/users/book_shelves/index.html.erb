@@ -1,2 +1,17 @@
-<h1>Users::BookShelves#index</h1>
-<p>Find me in app/views/users/book_shelves/index.html.erb</p>
+<h2><%= current_user.name %>さんの本棚一覧</h2>
+<table class="table bordered">
+  <thead>
+    <tr>
+      <td>名前</td>
+      <td>登録タイトル数</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @book_shelves.each do |book_shelf| %>
+      <tr>
+        <td><%= book_shelf.name %></td>
+        <td><%= link_to "destroy", book_shelf_path(book_shelf), method: :delete, class: "btn btn-danger" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,6 +1,13 @@
 class Users::UserTitlesController < ApplicationController
+  def index
+    @user_titles = current_user.user_titles
+  end
+
   def new
-    if params[:option] = "new"
+    # 新規登録書籍かどうかの分岐
+    if params[:id]
+      @book = Title.find(params[:id])
+    else
       @title = params[:title]
       # 登録する書籍が既に存在するかどうかチェック
       if Title.find_by(name: @title).present?
@@ -15,9 +22,29 @@ class Users::UserTitlesController < ApplicationController
           publisher: params[:publisher],
         )
       end
-    else
-      @book = Title.find_by(params[:id])
     end
     @user_title = current_user.user_titles.new
+    # ユーザが本棚を持っているかどうか
+    if current_user.book_shelves.present?
+      @book_shelves = current_user.book_shelves
+    end
+    @book_shelf = current_user.book_shelves.new
+  end
+
+  def create
+    # 既存の本棚を選んだかどうか
+    if params[:option] && params[:option] = "choice"
+      byebug
+    else
+      current_user.book_shelves.create!(name: params[:name])
+      @book_shelf = current_user.book_shelves.last
+    end
+    # DB内に既存の書籍の場合
+    if params[:user_title][:id]
+      id = params[:user_title][:id]
+      current_user.user_titles.create!(title_id: id)
+    end
+    byebug
+    redirect_to book_shelves_path
   end
 end
