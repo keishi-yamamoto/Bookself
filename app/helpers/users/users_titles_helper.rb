@@ -1,0 +1,2 @@
+module Users::UsersTitlesHelper
+end

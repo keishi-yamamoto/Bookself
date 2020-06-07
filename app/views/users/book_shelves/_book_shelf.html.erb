@@ -1,0 +1,27 @@
+<h2>
+  <% if @book_shelf %>
+    本棚【<%= @book_shelf.name %>】
+  <% else %>
+    本棚未設定のシリーズ
+  <% end %>
+</h2>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <td>シリーズ名</td>
+      <td>著者</td>
+      <td>出版社</td>
+      <td>所持巻数</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @user_titles.each do |user_title| %>
+      <tr>
+        <td><%= user_title.title.name %></td>
+        <td><%= user_title.title.author %></td>
+        <td><%= user_title.title.publisher %></td>
+        <td></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

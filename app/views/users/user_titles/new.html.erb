@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="offset-sm-3 col-sm-6">
+    <%= form_with(model: @user_title, local: true) do |f| %>
+      <div class="form-group row">
+        <%= f.label "書籍タイトル" %>
+        <%# DB内に既存の書籍かどうかで分岐 %>
+        <% if @book.id %>
+          <%= f.hidden_field :id, value: @book.id %>
+          <%= f.text_field :name, value: @book.name, class: "form form-control", aria: {describedby: "passwordHelpBlock"}, disabled: true %>
+          <small id="passwordHelpBlock" class="form-text text-muted">既存の書籍なので変更できません</small>
+        <% else %>
+          <%= f.text_field :name, value: @book.name, class: "form form-control", aria: {describedby: "passwordHelpBlock"} %>
+          <small id="passwordHelpBlock" class="form-text text-muted">基本的には変更せず、変更する際は上の元の商品名を参考に変更してください<br>
+          商品名: <%= @row_title %>
+          </small>
+        <% end %>
+      </div>
+      <div class="form-group row">
+        <%= f.label "著者名" %>
+        <%= f.text_field :author, value: @book.author, class:"form form-control", readonly: true %>
+      </div>
+      <div class="form-group row">
+        <%= f.label "出版社" %>
+        <%= f.text_field :publisher, value: @book.publisher, class:"form form-control", readonly: true %>
+      </div>
+      <%# 本棚選択欄 %>
+      <%# 本棚をひとつでも持っているかどうか %>
+      <% if @book_shelves %>
+        <div class="form-group">
+          <%= radio_button_tag :option, "choice" %>
+          <label>既存の本棚から選ぶ</label>
+          <%# [:BookShelf][:chosen_id]に今回選択した本棚のidを格納する %>
+          <%= collection_select :BookShelf, :chosen_id, @book_shelves, :id, :name, {prompt: false}, {id: "form-choice", class: "option custom-select"} %><br>
+        </div>
+      <% end %>
+      <div class="form-group">
+        <%= radio_button_tag :option, "new" %>
+        <label> 新しい本棚を作る</label>
+        <%= text_field_tag :name, "", class: "option form form-control",id: "form-new", disabled: false %>
+      </div>
+
+      <%# 登録巻数入力（つまみやallなどもあればよし) %>
+      <%# 巻数がひとつでもあれば所持しているという方式に変えるべきか？ %>
+      
+      <div class="form-group row">
+        <div class="offset-sm-5 col-sm-2">
+          <%= f.submit "登録する", class: "btn btn-success" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

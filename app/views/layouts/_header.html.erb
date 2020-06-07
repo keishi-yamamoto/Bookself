@@ -6,7 +6,10 @@
       </div>
       <div class="col-sm-9 text-right">
         <% if user_signed_in? %>
-          <%= current_user.name %>
+          <%= link_to "書籍登録", new_title_path %>
+          <%= link_to "所持本棚一覧", book_shelves_path %>
+          <%= link_to "所持書籍一覧", user_titles_path %>
+          <%= link_to "登録されている書籍", titles_path %>
           <%= link_to "ログアウト", destroy_user_session_path, method: :delete %>
           <%= form_tag(rakuten_api_path, method: :get) do %>
             <%= text_field_tag :keyword, params[:keyword], placeholder: "Search" %>

@@ -9,7 +9,7 @@ class Users::UsersController < ApplicationController
 
   def search_mail
     result = User.find_by(email: params[:email]).present?
-    render json:result
+    render json: result
   end
 
   def show
