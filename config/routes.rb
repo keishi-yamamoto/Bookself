@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     get 'search/new_title', as: 'register-title', to: 'search#new'
     resources :user_titles
     resources :titles
+    get 'book_shelves/nil', as: 'book_shelf_nil'
     resources :book_shelves
     get 'users/search_id'
     get 'users/search_mail'

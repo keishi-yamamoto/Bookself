@@ -1,4 +1,5 @@
 document.addEventListener('turbolinks:load', function () {
+  // 本棚が存在するかどうかviewにて表示分岐させている
   if (document.getElementById('option_choice') == null) {
     document.getElementById('option_new').remove();
   } else {

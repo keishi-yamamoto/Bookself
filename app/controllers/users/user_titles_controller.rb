@@ -28,7 +28,6 @@ class Users::UserTitlesController < ApplicationController
     if current_user.book_shelves.present?
       @book_shelves = current_user.book_shelves
     end
-    @book_shelf = current_user.book_shelves.new
   end
 
   def create

@@ -30,7 +30,7 @@
           <%= radio_button_tag :option, "choice" %>
           <label>既存の本棚から選ぶ</label>
           <%# [:BookShelf][:chosen_id]に今回選択した本棚のidを格納する %>
-          <%= collection_select :BookShelf, :chosen_id, @book_shelves, :id, :name, {prompt: "-登録済みの本棚一覧-"}, {id: "form-choice", class: "option custom-select"} %><br>
+          <%= collection_select :BookShelf, :chosen_id, @book_shelves, :id, :name, {prompt: false}, {id: "form-choice", class: "option custom-select"} %><br>
         </div>
       <% end %>
       <div class="form-group">
@@ -38,8 +38,10 @@
         <label> 新しい本棚を作る</label>
         <%= text_field_tag :name, "", class: "option form form-control",id: "form-new", disabled: false %>
       </div>
+
       <%# 登録巻数入力（つまみやallなどもあればよし) %>
       <%# 巻数がひとつでもあれば所持しているという方式に変えるべきか？ %>
+      
       <div class="form-group row">
         <div class="offset-sm-5 col-sm-2">
           <%= f.submit "登録する", class: "btn btn-success" %>
