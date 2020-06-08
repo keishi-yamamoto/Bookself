@@ -8,17 +8,14 @@ document.addEventListener('turbolinks:load', function () {
     optionChoice = document.getElementById('option_choice');
     formChoice = document.getElementById('form-choice');
     optionChoice.checked = true;
-    formNew.disabled = true;
+    formNew.readonly = true;
     optionChoice.addEventListener('click', function () {
-      formChoice.disabled = false;
-      optionNew.checked = false;
+      formChoice.disabled = true;
       formNew.disabled = true;
     });
     optionNew.addEventListener('click', function () {
-      formNew.disabled = false;
-      optionChoice.checked = false;
+      formNew.disabled = true;
       formChoice.disabled = true;
     })
   }
 });
-

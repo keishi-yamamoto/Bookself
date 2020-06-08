@@ -3,6 +3,10 @@ class Users::UserTitlesController < ApplicationController
     @user_titles = current_user.user_titles
   end
 
+  def show
+    @user_title = UserTitle.find(params[:id])
+  end
+
   def new
     # 新規登録書籍かどうかの分岐
     if params[:id]
@@ -59,5 +63,16 @@ class Users::UserTitlesController < ApplicationController
       title_id: @title.id
     )
     redirect_to book_shelves_path
+  end
+
+  def update
+    if params[:option] == "new"
+      current_user.book_shelves.create!(name: params[:name])
+      @book_shelf = current_user.book_shelves.last
+    else
+      @book_shelf = BookShelf.find(params[:user_title][:book_shelf_id])
+    end
+      UserTitle.find(params[:id]).update(book_shelf_id: @book_shelf.id)
+    redirect_to user_titles_path
   end
 end

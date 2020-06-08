@@ -5,7 +5,7 @@
     本棚未設定のシリーズ
   <% end %>
 </h2>
-<table class="table table-bordered">
+<table class="table table-bordered table-hover">
   <thead>
     <tr>
       <td>シリーズ名</td>
@@ -15,12 +15,13 @@
     </tr>
   </thead>
   <tbody>
-    <% @user_titles.each do |user_title| %>
-      <tr>
+    <% @user_titles.each_with_index do |user_title,i| %>
+      <tr id="row-<%= i %>" class="user_title">
         <td><%= user_title.title.name %></td>
         <td><%= user_title.title.author %></td>
         <td><%= user_title.title.publisher %></td>
         <td></td>
+        <div id="tag-info-<%= i %>" data-id="<%= user_title.id %>"></div>
       </tr>
     <% end %>
   </tbody>
