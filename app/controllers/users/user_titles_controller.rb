@@ -27,7 +27,7 @@ class Users::UserTitlesController < ApplicationController
         )
       end
     end
-    @user_title = current_user.user_titles.new
+    @user_title = UserTitle.new
     # ユーザが本棚を持っているかどうか
     if current_user.book_shelves.present?
       @book_shelves = current_user.book_shelves
@@ -58,9 +58,14 @@ class Users::UserTitlesController < ApplicationController
       )
       @title = Title.last
     end
+    # 所持巻数の入力
+    start_vol = params[:start_vol].to_i
+    end_vol = params[:end_vol].to_i
+    vol = [*start_vol..end_vol]
     current_user.user_titles.create!(
       book_shelf_id: @book_shelf.id,
-      title_id: @title.id
+      title_id: @title.id,
+      volume: vol.to_json
     )
     redirect_to book_shelves_path
   end

@@ -1,28 +1,44 @@
-<h2>
-  <% if @book_shelf %>
-    本棚【<%= @book_shelf.name %>】
-  <% else %>
-    本棚未設定のシリーズ
-  <% end %>
-</h2>
-<table class="table table-bordered table-hover">
-  <thead>
-    <tr>
-      <td>シリーズ名</td>
-      <td>著者</td>
-      <td>出版社</td>
-      <td>所持巻数</td>
-    </tr>
-  </thead>
-  <tbody>
-    <% @user_titles.each_with_index do |user_title,i| %>
-      <tr id="row-<%= i %>" class="user_title">
-        <td><%= user_title.title.name %></td>
-        <td><%= user_title.title.author %></td>
-        <td><%= user_title.title.publisher %></td>
-        <td></td>
-        <div id="tag-info-<%= i %>" data-id="<%= user_title.id %>"></div>
-      </tr>
+<div class="container">
+  <div class="row">
+    <h2>
+      <% if @book_shelf %>
+        本棚【<%= @book_shelf.name %>】
+        <%= link_to "削除", book_shelf_path, method: :delete, class:"btn btn-danger", data:
+        { confirm: "本棚を削除しても中の本は削除されません",
+          cancel: "やめる",
+          commit: "削除する"
+        }, title: "本棚を削除する" %>
+      <% else %>
+        本棚未設定のシリーズ
+      <% end %>
+    </h2>
+    <table class="table table-bordered table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th>シリーズ名</th>
+          <th>著者</th>
+          <th>出版社</th>
+          <th class="text-center" style="width: 10%">所持巻数</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @user_titles.each_with_index do |user_title,i| %>
+          <tr id="row-<%= i %>" class="user_title">
+            <td><%= user_title.title.name %></td>
+            <td><%= user_title.title.author %></td>
+            <td><%= user_title.title.publisher %></td>
+            <td class="text-center"><%= user_title.volumes.count %></td>
+            <div id="tag-info-<%= i %>" data-id="<%= user_title.id %>"></div>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= form_with(model: @book_shelf, local: true) do |f| %>
+      <h5>本棚名変更</h5>
+      <div class="form-inline">
+        <%= f.text_field :name, class:"form-control mx-sm-3" %>
+        <%= f.submit "変更", class: "btn btn-success" %>
+      </div>
     <% end %>
-  </tbody>
-</table>
+  </div>
+</div>

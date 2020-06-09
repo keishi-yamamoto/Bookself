@@ -1,68 +1,71 @@
 <div class="container">
   <div class="row">
-    <table class="table table-bordered">
-      <tr>
-        <th>シリーズ名</td>
-        <td><%= @user_title.title.name %></td>
-      </tr>
-      <tr>
-        <th>著者名</td>
-        <td><%= @user_title.title.author %></td>
-      </tr>
-      <tr>
-        <th>出版社</td>
-        <td><%= @user_title.title.publisher %></td>
-      </tr>
-      <tr>
-        <th>登録本棚</td>
-        <td>
-          <% if @user_title.book_shelf.present? %>
-            <%= link_to book_shelf_path(@user_title.book_shelf) do %>
-              <%= @user_title.book_shelf.name %>
-            <% end %>
-          <% else %>
-            未登録
-          <% end %>
-        </td>
-      </tr>
-    </table>
-  </div>
-  <%= form_with(model: @user_title, local: true) do |f| %>
-  <div class="row">
-    
-    <h4>
-      <%= radio_button_tag :option, "choice" %>
-      本棚を変更する
-    </h4>
-    <table class="table table-borderless">
-      <tr>
-        <td>現在</td>
-        <td colspan="2">変更先</td>
-      </tr>
-      <tr>
-        <td>
-          <% if @user_title.book_shelf.present? %>
-            <%= @user_title.book_shelf.name %>
-          <% else %>
-            未登録
-          <% end %>
-        </td>
-        <td>
-          <%= f.collection_select :book_shelf_id, current_user.book_shelves, :id, :name, {prompt: false}, {class: "form_choice custom-select"} %>
-        </td>
-        <td>
-          <%= f.submit "変更", class: "form_choice btn btn-success"%>
-        </td>
-      </tr>
-    </table>
-    <h4>
-      <%= radio_button_tag :option, "new" %>
-      新規本棚に登録する
-    </h4>
-    <div class="col-5">
-      <%= text_field_tag :name, "", class: "form_new form form-control"%>
+    <div class="col-2"></div>
+    <div class="col-8">
+      <div class="row">
+        <h2><%= @user_title.title.name %></h2>
+        <table class="table table-bordered">
+          <tr>
+            <th style="width: 25%">シリーズ名</th>
+            <td><%= @user_title.title.name %></td>
+          </tr>
+          <tr>
+            <th>著者名</th>
+            <td><%= @user_title.title.author %></td>
+          </tr>
+          <tr>
+            <th>出版社</th>
+            <td><%= @user_title.title.publisher %></td>
+          </tr>
+          <tr>
+            <th>登録本棚</th>
+            <td>
+              <% if @user_title.book_shelf.present? %>
+                <%= link_to book_shelf_path(@user_title.book_shelf) do %>
+                  <%= @user_title.book_shelf.name %>
+                <% end %>
+              <% else %>
+                未登録
+              <% end %>
+            </td>
+          </tr>
+        </table>
       </div>
-      <%= f.submit "登録", class: "form_new btn btn-success"%>
+      <%= form_with(model: @user_title, local: true) do |f| %>
+        <div class="row">
+          <h4>
+            <%= radio_button_tag :option, "choice" %>
+            本棚を変更する
+          </h4>
+          <table class="table table-borderless text-center col-8">
+            <tr>
+              <th>現在</th>
+              <th>変更先</th>
+            </tr>
+            <tr>
+              <td>
+                <% if @user_title.book_shelf.present? %>
+                  <%= @user_title.book_shelf.name %>
+                <% else %>
+                  未登録
+                <% end %>
+              </td>
+              <td>
+                <%= f.collection_select :book_shelf_id, current_user.book_shelves, :id, :name, {prompt: false}, {class: "form_choice custom-select col-6 mx-sm-3"} %>
+                <%= f.submit "変更", class: "form_choice btn btn-success"%>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="row">
+          <h4>
+            <%= radio_button_tag :option, "new" %>
+            新規本棚に登録する
+          </h4>
+          <%= text_field_tag :name, "", class: "form_new form-control col-5 mx-sm-3"%>
+          <%= f.submit "登録", class: "form_new btn btn-success"%>
+        </div>
+      <% end %>
+    </div>
   </div>
-  <% end %>
 </div>

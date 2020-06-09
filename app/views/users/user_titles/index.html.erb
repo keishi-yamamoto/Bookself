@@ -1,14 +1,14 @@
 <div class="container">
   <div class="row">
-    <h2><%= current_user.name %>さんの所持シリーズ一覧</h2>
+    <h2><%= current_user.name %>さんの所持シリーズ一覧(<%= @user_titles.count %>シリーズ/<%= current_user.total_books %>冊)</h2>
     <table class="table table-bordered table-hover">
-      <thead>
+      <thead class="thead-light">
         <tr>
-          <td>シリーズ名</td>
-          <td>著者</td>
-          <td>出版社</td>
-          <td>所持巻数</td>
-          <td>登録本棚</td>
+          <th>シリーズ名</th>
+          <th>著者</th>
+          <th>出版社</th>
+          <th class="text-center" style="width: 10%">所持巻数</th>
+          <th class="text-center" style="width: 10%">登録本棚</th>
         </tr>
       </thead>
       <tbody>
@@ -18,8 +18,8 @@
               <td><%= user_title.title.name %></td>
               <td><%= user_title.title.author %></td>
               <td><%= user_title.title.publisher %></td>
-              <td></td>
-              <td>
+              <td class="text-center"><%= user_title.volumes.count %></td>
+              <td class="text-center">
                 <% if user_title.book_shelf %>
                   <%= user_title.book_shelf.name %>
                 <% else %>
