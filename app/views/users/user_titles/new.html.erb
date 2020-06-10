@@ -23,6 +23,31 @@
         <%= f.label "出版社" %>
         <%= f.text_field :publisher, value: @book.publisher, class:"form form-control", readonly: true %>
       </div>
+      <%# 所持巻数選択欄 %>
+      <table class="table table-bordered">
+        <tr>
+          <td class="text-center" colspan="2">
+            <p>所持巻数登録(半角数字)</p>
+            <small class="is-invalid" id="number-alert"></small>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-center">
+            <p>開始巻数</p>
+            <small id="start-alert">(正の整数を入力してください)</small>
+          </td>
+          <td class="text-center">
+            <p>終了巻数</p>
+            <small id="end-alert">(正の整数を入力してください)</small>
+          </td>
+        </tr>
+        <tr>
+          <td><%= text_field_tag :start_vol, "", class: "form-control" %></td>
+          <td><%= text_field_tag :end_vol, "", class: "form-control" %></td>
+        </tr>
+      </table>
+      <small class="float-right text-muted">抜けている巻数がある場合は一度登録してから所持書籍一覧から編集してください</small>
+
       <%# 本棚選択欄 %>
       <%# 本棚をひとつでも持っているかどうか %>
       <% if @book_shelves %>
@@ -36,15 +61,12 @@
       <div class="form-group">
         <%= radio_button_tag :option, "new" %>
         <label> 新しい本棚を作る</label>
-        <%= text_field_tag :name, "", class: "option form form-control",id: "form-new", disabled: false %>
+        <%= text_field_tag :name, "", class: "option form form-control", id: "form-new" %>
       </div>
 
-      <%# 登録巻数入力（つまみやallなどもあればよし) %>
-      <%# 巻数がひとつでもあれば所持しているという方式に変えるべきか？ %>
-      
       <div class="form-group row">
         <div class="offset-sm-5 col-sm-2">
-          <%= f.submit "登録する", class: "btn btn-success" %>
+          <%= f.submit "登録する", class: "btn btn-success", id: "submit", disabled: true %>
         </div>
       </div>
     <% end %>

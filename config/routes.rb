@@ -17,15 +17,18 @@ Rails.application.routes.draw do
   scope module: :users do
     get 'search/search_api', as: 'rakuten-api'
     get 'search/index', as: 'result'
-    get 'search/book_title',  as: 'search-title'
-    get 'search/new_title', as: 'register-title', to: 'search#new'
-    resources :user_titles
-    resources :titles
+    get 'search/book_title',  as: 'search_title'
+    get 'search/new_title', as: 'register_title', to: 'search#new'
+    patch 'user_titles/update_all', as: 'update_all_titles'
+    resources :user_titles, except: [:edit]
+    resources :titles, only: [:index, :update]
     get 'book_shelves/nil', as: 'book_shelf_nil'
-    resources :book_shelves
+    delete 'book_shelves/destroy_all', as: 'book_shelves_destroy'
+    resources :book_shelves, except: [:new, :edit]
     get 'users/search_id'
     get 'users/search_mail'
-    resources :users
+    get 'users/search'
+    resources :users, except: [:index, :create, :new]
   end
 
   devise_for :admins, controllers: {

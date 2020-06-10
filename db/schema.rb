@@ -33,8 +33,7 @@ ActiveRecord::Schema.define(version: 2020_06_05_101723) do
   end
 
   create_table "books", force: :cascade do |t|
-    t.integer "book_series_id", null: false
-    t.string "name", null: false
+    t.integer "title_id", null: false
     t.integer "number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -52,7 +51,6 @@ ActiveRecord::Schema.define(version: 2020_06_05_101723) do
     t.string "name", null: false
     t.string "author"
     t.string "publisher"
-    t.integer "total_amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -61,6 +59,7 @@ ActiveRecord::Schema.define(version: 2020_06_05_101723) do
     t.integer "user_id"
     t.integer "book_shelf_id"
     t.integer "title_id"
+    t.string "volume"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

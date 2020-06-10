@@ -18,7 +18,6 @@ document.addEventListener('turbolinks:load', function () {
     });
   };
   const test = document.getElementById('book-title-2');
-  console.log(test.textContent);
   function search(i) {
     // モーダルの表示文
     const body = document.getElementById('modal-text');

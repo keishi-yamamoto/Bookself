@@ -1,6 +1,20 @@
 class Users::UserTitlesController < ApplicationController
   def index
-    @user_titles = current_user.user_titles
+    @user_titles = current_user.user_titles.order('book_shelf_id desc')
+  end
+
+  def show
+    @user_title = UserTitle.find(params[:id])
+    max = @user_title.volumes.max
+    # 10巻区切りにした場合の区切り個数と最後の区切りにおける巻数
+    @title_count = [@user_title.volumes.max.fdiv(10).ceil, max - (max / 10) * 10]
+    # maxが10の倍数の際には10巻とする
+    if @title_count[1] == 0
+      @title_count[1] = 10
+    end
+    if current_user.book_shelves.present?
+      @book_shelves = current_user.book_shelves
+    end
   end
 
   def new
@@ -23,7 +37,7 @@ class Users::UserTitlesController < ApplicationController
         )
       end
     end
-    @user_title = current_user.user_titles.new
+    @user_title = UserTitle.new
     # ユーザが本棚を持っているかどうか
     if current_user.book_shelves.present?
       @book_shelves = current_user.book_shelves
@@ -40,7 +54,6 @@ class Users::UserTitlesController < ApplicationController
       current_user.book_shelves.create!(name: params[:name])
       @book_shelf = current_user.book_shelves.last
     end
-
     # 登録する書籍に関する操作
     # DB内に既存の書籍の場合
     if params[:user_title][:id]
@@ -54,10 +67,64 @@ class Users::UserTitlesController < ApplicationController
       )
       @title = Title.last
     end
+    # 所持巻数の入力
+    start_vol = params[:start_vol].to_i
+    end_vol = params[:end_vol].to_i
+    vol = [*start_vol..end_vol]
     current_user.user_titles.create!(
       book_shelf_id: @book_shelf.id,
-      title_id: @title.id
+      title_id: @title.id,
+      volume: vol.to_json
     )
     redirect_to book_shelves_path
+  end
+
+  def update
+    @user_title = UserTitle.find(params[:id])
+    numbers = JSON.parse(params[:numbers])
+    # 新しい最終巻
+    new_max = numbers.rindex(1) + 1
+    vol = []
+    i = 1
+    new_max.times do
+      if numbers[i - 1] == 1
+        vol.push(i)
+      end
+      i += 1
+    end
+    unless params[:end_vol] == ""
+      # 新規追加巻数の最終巻
+      end_vol = params[:end_vol].to_i
+      vol.push(*(@user_title.volumes.max + 1)..end_vol)
+    end
+    if params[:option] == "choice"
+      @book_shelf = BookShelf.find(params[:user_title][:book_shelf_id])
+    else
+      current_user.book_shelves.create!(name: params[:name])
+      @book_shelf = current_user.book_shelves.last
+    end
+    @user_title.update(
+      book_shelf_id: @book_shelf.id,
+      volume: vol.to_json)
+    redirect_to user_titles_path
+  end
+
+  def update_all
+    @book_shelf =  BookShelf.find(params[:BookShelf][:chosen_id])
+    change_flags = JSON.parse(params[:numbers])
+    i = 0
+    change_flags.count.times do
+      if change_flags[i][1] == 1
+        UserTitle.find(change_flags[i][0]).update(book_shelf_id: @book_shelf.id)
+      end
+      i += 1
+    end
+    redirect_to user_titles_path
+  end
+
+  def destroy
+    @user_title = UserTitle.find(params[:id])
+    @user_title.destroy!
+    redirect_to user_titles_path
   end
 end

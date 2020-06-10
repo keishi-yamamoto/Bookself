@@ -1,27 +1,48 @@
-<h2><%= current_user.name %>さんの本棚一覧</h2>
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <td>名前</td>
-      <td>登録タイトル数</td>
-      <td></td>
-    </tr>
-  </thead>
-  <tbody>
-    <% @book_shelves.each do |book_shelf| %>
-      <tr>
-        <td>
-          <%= link_to book_shelf_path(book_shelf) do %>
-            <%= book_shelf.name %>
-          <% end %>
-        </td>
-        <td><%= book_shelf.user_titles.count %>
-        <td><%= link_to "destroy", book_shelf_path(book_shelf), method: :delete, class: "btn btn-danger" %></td>
-      </tr>
-    <% end %>
-    <tr>
-      <td><%= link_to "未登録書籍", book_shelf_nil_path%></td>
-      <td><%= @lost_titles.count %></td>
-    </tr>
-  </tbody>
-</table>
+<div class="container">
+  <div class="row">
+    <h2>
+      <%= current_user.name %>さんの本棚一覧
+      <%= link_to "全本棚削除", book_shelves_destroy_path, method: :delete, class:"btn btn-danger", data:
+        { confirm: "本棚を削除しても中の本は削除されません",
+          cancel: "やめる",
+          commit: "削除する"
+        }, title: "本棚を削除する" %>
+      </h2>
+    <table class="table table-bordered">
+      <thead class="thead-light">
+        <tr>
+          <th style="width: 75%">名前</th>
+          <th class="text-center">登録タイトル数</th>
+          <th style="width: 8%"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @book_shelves.each do |book_shelf| %>
+          <tr>
+            <td class="align-middle">
+              <%= link_to book_shelf_path(book_shelf) do %>
+                <%= book_shelf.name %>
+              <% end %>
+            </td>
+            <td class="text-center align-middle"><%= book_shelf.user_titles.count %></td>
+            <td class="text-center"><%= link_to "削除", book_shelf_path(book_shelf), method: :delete, class: "btn btn-danger" %></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td><%= link_to "未登録書籍", book_shelf_nil_path%></td>
+          <td class="text-center"><%= @lost_titles.count %></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row float-right">
+  <h4>新規本棚追加</h4>
+  <%= form_with(model: @book_shelf, local: true) do |f| %>
+    <div class="form-inline">
+      <%= f.text_field :name, class: "form-control mx-sm-3" %>
+      <%= f.submit "追加", class: "btn btn-success" %>
+    </div>
+  <% end %>
+  </div>
+</div>

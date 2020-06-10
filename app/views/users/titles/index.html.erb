@@ -1,21 +1,29 @@
-<h2>登録タイトル一覧</h2>
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <td>タイトル</td>
-      <td>著者</td>
-      <td>出版社</td>
-      <td>既刊数</td>
-    </tr>
-  </thead>
-  <tbody>
-    <% @titles.each do |title| %>
-      <tr>
-        <td><%= title.name %></td>
-        <td><%= title.author %></td>
-        <td><%= title.publisher %></td>
-        <td><%= title.total_amount %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="container">
+  <div class="row">
+    <h2>登録タイトル一覧</h2>
+    <table class="table table-bordered">
+      <thead class="thead-light">
+        <tr>
+          <th>タイトル</th>
+          <th>著者</th>
+          <th>出版社</th>
+          <th class="text-center" style="width: 10%">登録者数</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @titles.each do |title| %>
+          <tr>
+            <td><%= title.name %></td>
+            <td><%= title.author %></td>
+            <td><%= title.publisher %></td>
+            <td class="text-center">
+              <%= link_to "/users/search?title_id=#{title.id}" do %>
+                <%= title.user_titles.count %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

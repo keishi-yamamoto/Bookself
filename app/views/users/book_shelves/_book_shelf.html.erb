@@ -1,27 +1,95 @@
-<h2>
-  <% if @book_shelf %>
-    本棚【<%= @book_shelf.name %>】
-  <% else %>
-    本棚未設定のシリーズ
+<div class="container">
+  <div class="row">
+    <h2>
+      <% if @book_shelf.id != nil %>
+        本棚【<%= @book_shelf.name %>】
+        <%= link_to "削除", book_shelf_path, method: :delete, class:"btn btn-danger", data:
+        { confirm: "本棚を削除しても中の本は削除されません",
+          cancel: "やめる",
+          commit: "削除する"
+        }, title: "本棚を削除する" %>
+      <% else %>
+        本棚未設定のシリーズ
+      <% end %>
+    </h2>
+    <table class="table table-bordered table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th>シリーズ名</th>
+          <th>著者</th>
+          <th>出版社</th>
+          <th class="text-center" style="width: 10%">所持巻数</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @user_titles_this.each_with_index do |user_title,i| %>
+          <tr id="row-<%= i %>" class="user_title">
+            <td><%= user_title.title.name %></td>
+            <td><%= user_title.title.author %></td>
+            <td><%= user_title.title.publisher %></td>
+            <td class="text-center"><%= user_title.volumes.count %></td>
+            <div id="tag-info-<%= i %>" data-id="<%= user_title.id %>"></div>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="offset-6">
+  <%= form_with(model: @book_shelf, local: true) do |f| %>
+    <div class="form-gruop row">
+      <% if @book_shelf.id != nil %>
+        <label>本棚名変更</label>
+        <%= f.text_field :name, class: "form-control" %>
+      <% else %>
+        <label>本棚選択</label>
+        <%= collection_select :BookShelf, :chosen_id, current_user.book_shelves, :id, :name, {prompt: false},class: "custom-select" %>
+      <% end %>
+    </div>
+    <div class="form-group row">
+      <label>本棚一括変更(色付きが登録対象)</label>
+      <table class="table table-sm table-bordered">
+        <thead>
+          <tr>
+            <th>シリーズ名</th>
+            <th class="text-center" style="width:25%">現在の本棚</th>
+          </tr>
+        </thead>
+        <%# 擬似的にソートを実現 %>
+        <tbody>
+          <% @user_titles_this.each_with_index do |user_title,i| %>
+            <tr class="title_all table-success" data=<%= user_title.id %> id="title-<%= i %>">
+              <td><%= user_title.title.name %></td>
+              <td class="text-center">
+                <% if @book_shelf.id != nil %>
+                  <%= @book_shelf.name %>
+                <% else %>
+                  未登録
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+          <% @user_titles_others.each_with_index do |user_title,i| %>
+            <tr class="title_all" data=<%= user_title.id %> id="title-<%= @user_titles_this.count + i %>">
+              <td><%= user_title.title.name %></td>
+              <td class="text-center"><%= user_title.book_shelf.name %></td>
+            </tr>
+          <% end %>
+          <%# 未登録書籍本棚の場合はスキップ %>
+          <% if @user_titles_nil %>
+            <% @user_titles_nil.each_with_index do |user_title,i| %>
+              <tr class="title_all" data=<%= user_title.id %> id="title-<%= @user_titles_this.count + @user_titles_others.count + i %>">
+                <td><%= user_title.title.name %></td>
+                <td class="text-center">未登録</td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+      <%= hidden_field_tag :numbers, "", {id: "numbers"} %>
+    </div>
+    <div class="form-group text-center">
+      <%= f.submit "この本棚に登録", class: "btn btn-success" %>
+    </div>
   <% end %>
-</h2>
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <td>シリーズ名</td>
-      <td>著者</td>
-      <td>出版社</td>
-      <td>所持巻数</td>
-    </tr>
-  </thead>
-  <tbody>
-    <% @user_titles.each do |user_title| %>
-      <tr>
-        <td><%= user_title.title.name %></td>
-        <td><%= user_title.title.author %></td>
-        <td><%= user_title.title.publisher %></td>
-        <td></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+  </div>
+</div>

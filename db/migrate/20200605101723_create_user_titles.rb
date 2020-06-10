@@ -4,6 +4,7 @@ class CreateUserTitles < ActiveRecord::Migration[5.2]
       t.integer :user_id
       t.integer :book_shelf_id
       t.integer :title_id
+      t.string :volume
       t.timestamps
     end
   end
