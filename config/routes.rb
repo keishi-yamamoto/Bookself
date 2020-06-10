@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     resources :user_titles, except: [:edit]
     resources :titles, only: [:index, :update]
     get 'book_shelves/nil', as: 'book_shelf_nil'
+    delete 'book_shelves/destroy_all', as: 'book_shelves_destroy'
     resources :book_shelves, except: [:new, :edit]
     get 'users/search_id'
     get 'users/search_mail'

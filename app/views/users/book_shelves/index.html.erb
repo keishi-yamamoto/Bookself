@@ -1,6 +1,13 @@
 <div class="container">
   <div class="row">
-    <h2><%= current_user.name %>さんの本棚一覧</h2>
+    <h2>
+      <%= current_user.name %>さんの本棚一覧
+      <%= link_to "全本棚削除", book_shelves_destroy_path, method: :delete, class:"btn btn-danger", data:
+        { confirm: "本棚を削除しても中の本は削除されません",
+          cancel: "やめる",
+          commit: "削除する"
+        }, title: "本棚を削除する" %>
+      </h2>
     <table class="table table-bordered">
       <thead class="thead-light">
         <tr>

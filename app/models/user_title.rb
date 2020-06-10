@@ -7,4 +7,9 @@ class UserTitle < ApplicationRecord
   def volumes
     JSON.parse(volume)
   end
+
+  # 抜けている巻数を配列にする
+  def volumes_shortage
+    [*1..volumes.max] - volumes
+  end
 end

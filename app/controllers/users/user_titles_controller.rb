@@ -5,6 +5,16 @@ class Users::UserTitlesController < ApplicationController
 
   def show
     @user_title = UserTitle.find(params[:id])
+    max = @user_title.volumes.max
+    # 10巻区切りにした場合の区切り個数と最後の区切りにおける巻数
+    @title_count = [@user_title.volumes.max.fdiv(10).ceil, max - (max / 10) * 10]
+    # maxが10の倍数の際には10巻とする
+    if @title_count[1] == 0
+      @title_count[1] = 10
+    end
+    if current_user.book_shelves.present?
+      @book_shelves = current_user.book_shelves
+    end
   end
 
   def new
@@ -71,13 +81,32 @@ class Users::UserTitlesController < ApplicationController
   end
 
   def update
-    if params[:option] == "new"
+    @user_title = UserTitle.find(params[:id])
+    numbers = JSON.parse(params[:numbers])
+    # 新しい最終巻
+    new_max = numbers.rindex(1) + 1
+    vol = []
+    i = 1
+    new_max.times do
+      if numbers[i - 1] == 1
+        vol.push(i)
+      end
+      i += 1
+    end
+    unless params[:end_vol] == ""
+      # 新規追加巻数の最終巻
+      end_vol = params[:end_vol].to_i
+      vol.push(*(@user_title.volumes.max + 1)..end_vol)
+    end
+    if params[:option] == "choice"
+      @book_shelf = BookShelf.find(params[:user_title][:book_shelf_id])
+    else
       current_user.book_shelves.create!(name: params[:name])
       @book_shelf = current_user.book_shelves.last
-    else
-      @book_shelf = BookShelf.find(params[:user_title][:book_shelf_id])
     end
-      UserTitle.find(params[:id]).update(book_shelf_id: @book_shelf.id)
+    @user_title.update(
+      book_shelf_id: @book_shelf.id,
+      volume: vol.to_json)
     redirect_to user_titles_path
   end
 end

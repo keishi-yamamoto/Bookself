@@ -31,4 +31,9 @@ class Users::BookShelvesController < ApplicationController
     BookShelf.find(params[:id]).destroy!
     redirect_to book_shelves_path
   end
+
+  def destroy_all
+    current_user.book_shelves.destroy_all
+    redirect_to book_shelves_path
+  end
 end
