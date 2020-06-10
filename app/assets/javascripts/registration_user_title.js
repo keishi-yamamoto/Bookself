@@ -8,13 +8,13 @@ document.addEventListener('turbolinks:load', function () {
     optionChoice = document.getElementById('option_choice');
     formChoice = document.getElementById('form-choice');
     optionChoice.checked = true;
-    formNew.readonly = true;
+    formNew.disabled = true;
     optionChoice.addEventListener('click', function () {
-      formChoice.disabled = true;
+      formChoice.disabled = false;
       formNew.disabled = true;
     });
     optionNew.addEventListener('click', function () {
-      formNew.disabled = true;
+      formNew.disabled = false;
       formChoice.disabled = true;
     })
   }

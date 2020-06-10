@@ -3,8 +3,15 @@
     <div class="col-2"></div>
     <div class="col-8">
       <div class="row">
-        <div id="title-info" value="<%= @user_title.volumes.max %>" data="<%= @user_title.volumes_shortage.to_json %>"></div>
-        <h2><%= @user_title.title.name %>(<%= @user_title.volumes.count %>冊)</h2>
+        <div id= "title-info" value="<%= @user_title.volumes.max %>" data="<%= @user_title.volumes_shortage.to_json %>"></div>
+        <h2>
+          <%= @user_title.title.name %>(<%= @user_title.volumes.count %>冊)
+          <%= link_to "削除", user_title_path, method: :delete, class:"btn btn-danger", data:
+            { confirm: "登録している各巻も全て削除されます",
+              cancel: "やめる",
+              commit: "削除する"
+            }, title: "シリーズを削除する" %>
+        </h2>
         <table class="table table-bordered">
           <tr>
             <th style="width: 25%">シリーズ名</th>
@@ -33,7 +40,7 @@
         </table>
       </div>
       <%= form_with(model: @user_title, local: true) do |f| %>
-        <h3>所持巻数詳細(色付きが所持)</h3>
+        <h3>所持巻数(色付きが所持)</h3>
         <%# 抜け巻数を表示する %>
         <% if @user_title.volumes_shortage.blank? %>
           <p>1巻から<%= @user_title.volumes.max %>巻まで全て所持</p>
@@ -41,18 +48,15 @@
         <table class="table table-sm table-bordered">
         <% (1..@title_count[0]).each_with_index do |i| %>
           <tr>
-            <th>
-              -<%= i * 10 %>巻
-            </th>
             <% if i < @title_count[0] %>
               <% (1..10).each do |n| %>
-                <td class="text-center bg-info" id="number-<%= n + (i - 1) * 10 %>">
+                <td class="text-center table-primary" id="number-<%= n + (i - 1) * 10 %>">
                   <%= n + (i - 1) * 10 %>
                 </td>
               <% end %>
             <% else %>
               <% (1..@title_count[1]).each do |n| %>
-                <td class="text-center bg-info" id="number-<%= n + (i - 1) * 10 %>">
+                <td class="text-center table-primary" id="number-<%= n + (i - 1) * 10 %>">
                   <%= n + (i - 1) * 10 %>
                 </td>
               <% end %>

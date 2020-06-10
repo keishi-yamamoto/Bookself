@@ -33,4 +33,41 @@
       </tbody>
     </table>
   </div>
+  <div class="offset-6">
+  <%= form_with(url: update_all_titles_path, method: :patch, local: true) do |f| %>
+    <div class="form-gruop row">
+      <label>本棚選択</label>
+      <%= collection_select :BookShelf, :chosen_id, current_user.book_shelves, :id, :name, {prompt: false},class: "custom-select" %>
+    </div>
+    <div class="form-group row">
+      <label>本棚一括変更(色付きが登録対象)</label>
+      <table class="table table-sm table-bordered">
+        <thead>
+          <tr>
+            <th>シリーズ名</th>
+            <th class="text-center" style="width:25%">現在の本棚</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @user_titles.each_with_index do |user_title,i| %>
+            <tr class="title_all" data=<%= user_title.id %> id="title-<%= i %>">
+              <td><%= user_title.title.name %></td>
+              <td class="text-center">
+                <% if user_title.book_shelf %>
+                  <%= user_title.book_shelf.name %>
+                <% else %>
+                  未登録
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= hidden_field_tag :numbers, "", {id: "numbers"} %>
+    </div>
+    <div class="form-group text-center">
+      <%= f.submit "この本棚に登録", class: "btn btn-success" %>
+    </div>
+  <% end %>
+  </div>
 </div>

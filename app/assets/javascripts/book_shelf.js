@@ -17,4 +17,32 @@ document.addEventListener('turbolinks:load', function () {
   function search(i) {
     window.location.href = '/user_titles/' + data[ i ];
   }
+  const rowTitles = document.getElementsByClassName('title_all');
+  const rowTitle = [];
+  const dataTitle = [];
+  // 初期設定
+  for (let i = 0; i < rowTitles.length; i++) {
+    rowTitle[ i ] = document.getElementById('title-' + i);
+    // 現在の登録されている本棚が表示している本棚かどうか
+    if (rowTitle[ i ].getAttribute('class').includes('table-success')) {
+      dataTitle[ i ] = [ parseInt(rowTitle[ i ].getAttribute('data')), 1 ];
+    } else {
+      dataTitle[ i ] = [ parseInt(rowTitle[ i ].getAttribute('data')), 0 ];
+    }
+  }
+  numbers = document.getElementById('numbers');
+  numbers.value = JSON.stringify(dataTitle);
+  for (let i = 0; i < rowTitles.length; i++) {
+    rowTitle[ i ].addEventListener('click', function () {
+      if (dataTitle[ i ][ 1 ] == 0) {
+        this.classList.add('table-success');
+        dataTitle[ i ][ 1 ] = 1;
+        numbers.value = JSON.stringify(dataTitle);
+      } else {
+        this.classList.remove('table-success');
+        dataTitle[ i ][ 1 ] = 0;
+        numbers.value = JSON.stringify(dataTitle);
+      }
+    });
+  }
 });

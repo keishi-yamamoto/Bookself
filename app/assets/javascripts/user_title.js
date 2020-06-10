@@ -15,7 +15,7 @@ document.addEventListener('turbolinks:load', function () {
     td[ i ] = document.getElementById('number-' + i);
     // 抜け巻数リストに含まれていたら未所持状態に変える
     if (volShortage.includes(i)) {
-      td[ i ].classList.remove('bg-info');
+      td[ i ].classList.remove('table-primary');
       data[ i - 1 ] = 0;
     } else {
       data[ i - 1 ] = 1;
@@ -24,15 +24,15 @@ document.addEventListener('turbolinks:load', function () {
   numbers = document.getElementById('numbers')
   numbers.value = JSON.stringify(data);
   // クリックで色と所持しているどうかのvalueを切り替える
-  for (let l = 1; l <= maxVol; l++) {
-    td[ l ].addEventListener('click', function () {
-      if (data[l - 1] == 0) {
-        td[ l ].classList.add('bg-info');
-        data[ l - 1 ] = 1;
+  for (let i = 1; i <= maxVol; i++) {
+    td[ i ].addEventListener('click', function () {
+      if (data[i - 1] == 0) {
+        td[ i ].classList.add('table-primary');
+        data[ i - 1 ] = 1;
         numbers.value = JSON.stringify(data);
       } else {
-        td[ l ].classList.remove('bg-info');
-        data[ l - 1 ] = 0;
+        td[ i ].classList.remove('table-primary');
+        data[ i - 1 ] = 0;
         numbers.value = JSON.stringify(data);
       }
     })
