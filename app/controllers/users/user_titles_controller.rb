@@ -79,6 +79,7 @@ class Users::UserTitlesController < ApplicationController
     current_user.user_titles.create!(
       book_shelf_id: @book_shelf.id,
       title_id: @title.id,
+      volume: "test"
     )
     redirect_to book_shelves_path
   end
