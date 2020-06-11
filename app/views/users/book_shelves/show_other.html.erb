@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="row">
+    <h2><%= @book_shelf.user.name %>さんの本棚【<%= @book_shelf.name %>】</h2>
+    <table class="table table-bordered table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th>シリーズ名</th>
+          <th>著者</th>
+          <th>出版社</th>
+          <th class="text-center" style="width: 10%">所持巻数</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @user_titles.each_with_index do |user_title,i| %>
+          <tr id="row-<%= i %>" class="user_title">
+            <td><%= user_title.title.name %></td>
+            <td><%= user_title.title.author %></td>
+            <td><%= user_title.title.publisher %></td>
+            <td class="text-center"><%= user_title.volumes.count %></td>
+            <div id="tag-info-<%= i %>" data-id="<%= user_title.id %>"></div>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

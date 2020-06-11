@@ -3,6 +3,11 @@ class Users::UserTitlesController < ApplicationController
     @user_titles = current_user.user_titles.order('book_shelf_id desc')
   end
 
+  def index_other
+    @user = User.find(params[:user_id])
+    @user_titles = @user.user_titles.order('book_shelf_id desc')
+  end
+
   def show
     @user_title = UserTitle.find(params[:id])
     max = @user_title.volumes.max

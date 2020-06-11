@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <h2>
-      <%= current_user.name %>さんの本棚一覧
+      本棚一覧
       <%= link_to "全本棚削除", book_shelves_destroy_path, method: :delete, class:"btn btn-danger", data:
         { confirm: "本棚を削除しても中の本は削除されません",
           cancel: "やめる",
@@ -22,6 +22,11 @@
             <td class="align-middle">
               <%= link_to book_shelf_path(book_shelf) do %>
                 <%= book_shelf.name %>
+                <% if book_shelf.is_public %>
+                  <i class="fas fa-unlock"></i>
+                <% else %>
+                  <i class="fas fa-lock"></i>
+                <% end %>
               <% end %>
             </td>
             <td class="text-center align-middle"><%= book_shelf.user_titles.count %></td>

@@ -3,6 +3,11 @@
     <h2>
       <% if @book_shelf.id != nil %>
         本棚【<%= @book_shelf.name %>】
+        <% if @book_shelf.is_public %>
+          <i class="fas fa-unlock"></i>
+        <% else %>
+          <i class="fas fa-lock"></i>
+        <% end %>
         <%= link_to "削除", book_shelf_path, method: :delete, class:"btn btn-danger", data:
         { confirm: "本棚を削除しても中の本は削除されません",
           cancel: "やめる",
@@ -36,6 +41,15 @@
   </div>
   <div class="offset-6">
   <%= form_with(model: @book_shelf, local: true) do |f| %>
+    <div class="form-group">
+      <label>公開設定</label>
+      <div class="form-inline row offset-3">
+        <label class="mx-sm-1">非公開</label>
+        <%= f.radio_button :is_public, false, class:"mx-sm-3" %>
+        <label class="mx-sm-1">公開</label>
+        <%= f.radio_button :is_public, true, class:"mx-sm-3" %>
+      </div>
+    </div>
     <div class="form-gruop row">
       <% if @book_shelf.id != nil %>
         <label>本棚名変更</label>

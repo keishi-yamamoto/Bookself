@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="row">
+    <h2><%= @user.name %>さんの本棚一覧</h2>
+    <table class="table table-bordered">
+      <thead class="thead-light">
+        <tr>
+          <th style="width: 80%">名前</th>
+          <th class="text-center">登録タイトル数</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @book_shelves.each do |book_shelf| %>
+          <tr>
+            <td class="align-middle">
+              <%= link_to book_shelf_other_path(book_shelf) do %>
+                <%= book_shelf.name %>
+              <% end %>
+            </td>
+            <td class="text-center align-middle"><%= book_shelf.user_titles.count %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

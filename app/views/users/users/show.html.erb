@@ -1,2 +1,40 @@
-<h1>Users::Users#show</h1>
-<p>Find me in app/views/users/users/show.html.erb</p>
+<div class="container">
+  <div class="row">
+    <h4>
+      <%= @user.name %>
+      <small>@<%= @user.elastic_id %></small>
+    </h4>
+  <table class="table table-borderless">
+    <thead class="text-center">
+      <tr>
+        <td>所持本棚</td>
+        <td>所持タイトル</td>
+        <td>フォロー</td>
+        <td>フォロワー</td>
+      </tr>
+    </thead>
+    <tbody class="text-center">
+      <tr>
+        <td>
+          <%= link_to book_shelves_other_path(@user) do %>
+            <%= @book_shelves.count %>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to user_titles_other_path(@user) do %>
+            <%= @user.user_titles.count %>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to "#" do %>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to "#" do %>
+          <% end %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div>
+</div>
