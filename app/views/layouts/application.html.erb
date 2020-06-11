@@ -5,6 +5,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <script src="https://kit.fontawesome.com/6f0e0336a0.js" crossorigin="anonymous"></script>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
@@ -12,6 +13,9 @@
   <%= render 'layouts/header' %>
 
   <body>
+    <div class="container">
+      <p class="is-invalid" id="notice"><%= notice %></p>
+    </div>
     <%= yield %>
   </body>
 </html>

@@ -1,1 +1,29 @@
-This is top page.
+<div class="container">
+  <div class="row">
+    <h2>新規登録された書籍</h2>
+    <table class="table table-bordered">
+      <thead class="thead-light">
+        <tr>
+          <th>タイトル</th>
+          <th>著者</th>
+          <th>出版社</th>
+          <th class="text-center" style="width: 10%">登録者数</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @new_titles.each do |title| %>
+          <tr>
+            <td><%= title.name %></td>
+            <td><%= title.author %></td>
+            <td><%= title.publisher %></td>
+            <td class="text-center">
+              <%= link_to "/users/search?title_id=#{title.id}" do %>
+                <%= title.user_titles.count %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

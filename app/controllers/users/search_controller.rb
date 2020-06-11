@@ -40,10 +40,6 @@ class Users::SearchController < ApplicationController
     render json: @items
   end
 
-  def create
-
-  end
-
   private
   # salesDateのフォーマットを整える
   def date_prefix(results)

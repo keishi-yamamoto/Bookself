@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="row">
+    <h2><%= @user.name %>さんの所持シリーズ一覧(<%= @user_titles.count %>シリーズ/<%= @user.total_books %>冊)</h2>
+    <table class="table table-bordered table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th>シリーズ名</th>
+          <th>著者</th>
+          <th>出版社</th>
+          <th class="text-center" style="width: 10%">所持巻数</th>
+          <th class="text-center" style="width: 10%">登録本棚</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @user_titles.present? %>
+          <% @user_titles.each_with_index do |user_title,i| %>
+            <tr id="row-<%= i %>" class="user_title">
+              <td><%= user_title.title.name %></td>
+              <td><%= user_title.title.author %></td>
+              <td><%= user_title.title.publisher %></td>
+              <td class="text-center"><%= user_title.volumes.count %></td>
+              <td class="text-center">
+                <% if user_title.book_shelf %>
+                  <%= user_title.book_shelf.name %>
+                <% else %>
+                  未登録
+                <% end %>
+              </td>
+              <div id="tag-info-<%= i %>" data-id="<%= user_title.id %>"></div>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

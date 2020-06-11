@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="row">
+    <h2><%= @title.name %>を登録しているユーザ</h2>
+    <table class="table table-bordered">
+      <thead class="thead-light">
+        <tr>
+          <th>ユーザ名</th>
+          <th class="text-center">登録本棚</th>
+          <th class="text-center">登録タイトル</th>
+          <th class="text-center" style="width: 10%">フォロー</th>
+          <th class="text-center" style="width: 10%">フォロワー</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @user_titles.each do |user_title| %>
+          <tr>
+            <td>
+              <%= link_to user_path(user_title.user) do%>
+                <%= user_title.user.name %>
+                <small class="text-muted">@<%= user_title.user.elastic_id %></small>
+              <% end %>
+            </td>
+            <td class="text-center">
+              <%= user_title.user.book_shelves.count %>
+            </td>
+            <td class="text-center"><%= user_title.user.user_titles.count %></td>
+            <td class="text-center">
+              <%= link_to "#" do %>
+                0
+              <% end %>
+            </td>
+            <td class="text-center">
+              <%= link_to "#" do %>
+                0
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

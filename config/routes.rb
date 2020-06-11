@@ -15,15 +15,18 @@ Rails.application.routes.draw do
   }
 
   scope module: :users do
+    # 商品検索に関わるアクション
     get 'search/search_api', as: 'rakuten-api'
     get 'search/index', as: 'result'
     get 'search/book_title',  as: 'search_title'
-    get 'search/new_title', as: 'register_title', to: 'search#new'
+    get 'user_titles/other/:user_id', to: 'user_titles#index_other', as: 'user_titles_other'
     patch 'user_titles/update_all', as: 'update_all_titles'
     resources :user_titles, except: [:edit]
-    resources :titles, only: [:index, :update]
+    get 'titles', to: 'titles#index', as: 'titles'
     get 'book_shelves/nil', as: 'book_shelf_nil'
     delete 'book_shelves/destroy_all', as: 'book_shelves_destroy'
+    get 'book_shelves/other/:user_id', to: 'book_shelves#index_other', as: 'book_shelves_other'
+    get 'book_shelf/other/:id', to: 'book_shelves#show_other', as: 'book_shelf_other'
     resources :book_shelves, except: [:new, :edit]
     get 'users/search_id'
     get 'users/search_mail'

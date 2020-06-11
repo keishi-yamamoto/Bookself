@@ -1,9 +1,16 @@
 class Users::BookShelvesController < ApplicationController
+  before_action :authenticate_user!, except: [:index_other, :show_other]
+
   def index
     @book_shelves = current_user.book_shelves
     # 本棚が削除されたままでどの本棚にも入っていない書籍
     @lost_titles = current_user.user_titles.where(book_shelf_id: nil)
     @book_shelf = BookShelf.new
+  end
+
+  def index_other
+    @user = User.find(params[:user_id])
+    @book_shelves = @user.book_shelves.where(is_public: true)
   end
 
   def create
@@ -27,12 +34,28 @@ class Users::BookShelvesController < ApplicationController
 
   def show
     @book_shelf = BookShelf.find(params[:id])
-    # 現在の本棚に入っている書籍
-    @user_titles_this = @book_shelf.user_titles
-    # それ以外の書籍を取り出し、本棚順にソートする
-    @user_titles_others = current_user.user_titles.where.not(book_shelf_id: @book_shelf.id).order("book_shelf_id desc")
-    # 本棚未登録の本
-    @user_titles_nil = current_user.user_titles.where(book_shelf_id: nil) 
+    if current_user == @book_shelf.user
+      # 現在の本棚に入っている書籍
+      @user_titles_this = @book_shelf.user_titles
+      # それ以外の書籍を取り出し、本棚順にソートする
+      @user_titles_others = current_user.user_titles.where.not(book_shelf_id: @book_shelf.id).order("book_shelf_id desc")
+      # 本棚未登録の本
+      @user_titles_nil = current_user.user_titles.where(book_shelf_id: nil) 
+    else
+      flash[:notice] == "アクセス権がありません"
+      redirect_to root_path
+    end
+  end
+
+  # is_public: trueの他人の本棚詳細画面
+  def show_other
+    @book_shelf = BookShelf.find(params[:id])
+    if @book_shelf.is_public
+      @user_titles = @book_shelf.user_titles
+    else
+      flash[:notice] = "入力されたidの本棚は非公開設定です"
+      redirect_to root_path
+    end
   end
 
   # 本棚に入っていない書籍を入れてある本棚
@@ -45,7 +68,7 @@ class Users::BookShelvesController < ApplicationController
   def update
     # 本棚更新アクション
     @book_shelf = BookShelf.find(params[:id])
-    @book_shelf.update(name: params[:book_shelf][:name])
+    @book_shelf.update(book_shelf_params)
     # 登録書籍一括変更アクション
     change_flags = JSON.parse(params[:numbers])
     # 元々本棚に登録されていた書籍数
@@ -76,5 +99,10 @@ class Users::BookShelvesController < ApplicationController
   def destroy_all
     current_user.book_shelves.destroy_all
     redirect_to book_shelves_path
+  end
+
+  private
+  def book_shelf_params
+    params.require(:book_shelf).permit(:id, :name, :is_public)
   end
 end

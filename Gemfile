@@ -65,8 +65,4 @@ gem 'bootstrap', ">= 4.3.1"
 gem 'jquery-rails'
 gem 'rakuten_web_service'
 gem 'dotenv-rails'
-group :production do
-  gem 'mysql2'
-end
 gem 'data-confirm-modal'
-gem 'dotenv-rails'

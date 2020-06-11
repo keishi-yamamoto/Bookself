@@ -3,6 +3,11 @@ class Users::UserTitlesController < ApplicationController
     @user_titles = current_user.user_titles.order('book_shelf_id desc')
   end
 
+  def index_other
+    @user = User.find(params[:user_id])
+    @user_titles = @user.user_titles.order('book_shelf_id desc')
+  end
+
   def show
     @user_title = UserTitle.find(params[:id])
     max = @user_title.volumes.max
@@ -74,7 +79,6 @@ class Users::UserTitlesController < ApplicationController
     current_user.user_titles.create!(
       book_shelf_id: @book_shelf.id,
       title_id: @title.id,
-      volume: vol.to_json
     )
     redirect_to book_shelves_path
   end
