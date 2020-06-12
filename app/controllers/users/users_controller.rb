@@ -1,8 +1,11 @@
 class Users::UsersController < ApplicationController
-  before_action :authenticate_user!, except: [:top, :search, :show]
+  before_action :authenticate_user!, only: [:edit, :update, :destroy]
 
   def top
     @new_titles = Title.all.order('id desc').take(10)
+  end
+
+  def about
   end
 
   def search

@@ -3,8 +3,11 @@
     <h4>
       <%= @user.name %>
       <small>@<%= @user.elastic_id %></small>
-      <% if user_signed_in? && current_user == @user %>
-        <%= link_to "情報変更", edit_user_path(@user), class: "btn btn-info"  %>
+      <% if user_signed_in? %>
+        <% if current_user == @user %>
+          <%= link_to "情報変更", edit_user_path(@user), class: "btn btn-info"  %>
+        <% else %>
+        <% end %>
       <% end %>
     </h4>
   <table class="table table-bordered">

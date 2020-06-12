@@ -1,0 +1,92 @@
+<div class="container">
+  <% if @results %>
+    <% if  @results[0].blank? && @results[1].blank? %>
+      <div class="row">
+        検索しましたが何も見つかりませんでした
+      </div>
+    <% else %>
+      <div class="row">
+        <h5>検索結果</h5>
+        <table class="table table-bordered table-hover">
+          <thead class="table-info">
+            <tr>
+              <th colspan="5" class="text-center">登録書籍検索</th>
+            </tr>
+            <tr>
+              <th colspan="2">タイトル</th>
+              <th>著者</th>
+              <th>出版社</th>
+              <th class="text-center" style="width: 10%">登録者</th>
+            </tr>
+          </thead>
+          <% if @results[0] %>
+            <% @results[0].each do |title| %>
+            <tbody>
+              <tr>
+                <td colspan="2"><%= title.name %></td>
+                <td><%= title.author %></td>
+                <td><%= title.publisher %></td>
+                <td class="text-center">
+                  <%= link_to "/users/search?title_id=#{title.id}" do %>
+                    <%= title.user_titles.count %>
+                  <% end %>
+                </td>
+              </tr>
+            </tbody>
+            <% end %>
+          <% end %>
+          <thead class="table-success">
+            <tr>
+              <th colspan="5" class="text-center">ユーザ検索</th>
+            </tr>
+            <tr>
+              <th>ユーザ名</th>
+              <th class="text-center" style="width:15%">所持本棚</th>
+              <th class="text-center" style="width:15%">所持タイトル</th>
+              <th class="text-center" style="width:15%">フォロー</th>
+              <th class="text-center" style="width:15%">フォロワー</th>
+            </tr>
+          </thead>
+          <% if @results[1] %>
+            <% @results[1].each do |user| %>
+              <tbody>
+                <tr>
+                  <td>
+                    <%= link_to user_path(user) do%>
+                      <%= user.name %>
+                      <small class="text-muted">@<%= user.elastic_id %></small>
+                    <% end %>
+                  </td>
+                  <td class="text-center">
+                    <% if current_user == user %>
+                      <%= user.book_shelves.count %>
+                    <% else %>
+                      <%= user.book_shelves.where(is_public: true).count %>
+                    <% end %>
+                  </td>
+                  <td class="text-center">
+                    <% if current_user == user %>
+                      <%= user.user_titles.count %>
+                    <% else%>
+                      <%= user.user_titles.joins(:book_shelf).where(book_shelves: {is_public: true}).count %>
+                    <% end %>
+                  </td>
+                  <td class="text-center">
+                    <%= link_to "#" do %>
+                      0
+                    <% end %>
+                  </td>
+                  <td class="text-center">
+                    <%= link_to "#" do %>
+                      0
+                    <% end %>
+                  </td>
+                </tr>
+              </tbody>
+            <% end %>
+          <% end %>
+        </table>
+      </div>
+    <% end %>
+  <% end %>
+</div>

@@ -23,14 +23,14 @@
             <td class="text-center">
               <%# 他のユーザからは公開本棚しかみえないように %>
               <% if user_signed_in? && current_user == user_title.user %>
-                <%= user_title.user.book_shelves %>
+                <%= user_title.user.book_shelves.count %>
               <% else %>
                 <%= user_title.user.book_shelves.where(is_public: true).count %>
               <% end %>
             </td>
             <td class="text-center">
               <% if user_signed_in? && current_user == user_title.user %>
-                <%= user_title.user.user_titles %>
+                <%= user_title.user.user_titles.count %>
               <% else%>
                 <%= user_title.user.user_titles.joins(:book_shelf).where(book_shelves: {is_public: true}).count %>
               <% end %>

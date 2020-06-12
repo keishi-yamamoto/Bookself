@@ -15,10 +15,13 @@ Rails.application.routes.draw do
   }
 
   scope module: :users do
+    get 'about', to: 'users#about', as: 'about'
     # 商品検索に関わるアクション
-    get 'search/search_api', as: 'rakuten-api'
+    get 'search/search_api', as: 'rakuten_api'
     get 'search/index', as: 'result'
-    get 'search/book_title',  as: 'search_title'
+    get 'search/book_title'
+    get 'search/total', as: 'search_total'
+    get 'search/results', as: 'search_results'
     get 'user_titles/other/:user_id', to: 'user_titles#index_other', as: 'user_titles_other'
     patch 'user_titles/update_all', as: 'update_all_titles'
     resources :user_titles, except: [:edit]

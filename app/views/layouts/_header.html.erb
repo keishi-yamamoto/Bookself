@@ -1,21 +1,44 @@
 <header>
   <div class="container">
     <div class="row">
-      <div class="col-sm-3 text-center">
-        <%= link_to "Bookself", root_path %>
-      </div>
-      <div class="col-sm-9 text-right">
+      <div class="col-4">
+        <%= link_to "Bookself", root_path, class: "btn btn-outline-light btn-lg offset-3" %>
         <% if user_signed_in? %>
-          <%= link_to "マイページ", user_path(current_user) %>
-          <%= link_to "登録されている書籍", titles_path %>
-          <%= link_to "ログアウト", destroy_user_session_path, method: :delete %>
-          <%= form_tag(rakuten_api_path, method: :get) do %>
-            <%= text_field_tag :keyword, params[:keyword], placeholder: "新規タイトル検索" %>
-            <%= submit_tag "検索", :name => nil %>
-          <% end %>
+          <div class="form-group form-inline new-book-search">
+            <%= form_tag(rakuten_api_path, method: :get) do %>
+              <%= text_field_tag :keyword_new, params[:keyword_new], placeholder: "新規書籍検索", class: "form-control" %>
+              <%= submit_tag "検索", class: "btn btn-outline-light" %>
+            <% end %>
+          </div>
         <% else %>
-          <%= link_to "ログイン", new_user_session_path %>
-          <%= link_to "新規登録", new_user_registration_path %>
+          <div class="form-group form-inline new-book-search offset-4">
+            <%= link_to "About", about_path, class: "btn btn-outline-light" %>
+          </div>
+        <% end %>
+      </div>
+      <div>
+        <% if user_signed_in? %>
+          <div class="form-group form-inline nav-bar float-right">
+            <%= link_to user_path(current_user), class: "btn btn-outline-light mx-3" do %>
+              <i class="fas fa-address-card">マイページ</i>
+            <% end %>
+            <%= form_tag(search_results_path, method: :get) do %>
+              <%= text_field_tag :keyword_db, params[:keyword_db], placeholder: "ユーザ・書籍検索", class: "form-control" %>
+              <%= submit_tag "検索", class: "btn btn-outline-light mx-3 " %>
+            <% end %>
+            <%= link_to  destroy_user_session_path, method: :delete, class: "btn btn-outline-light" do %>
+              <i class="fas fa-sign-out-alt">ログアウト</i>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="nav-bar">
+            <%= link_to new_user_session_path, class: "btn btn-outline-light" do %>
+              <i class="fas fa-sign-in-alt">ログイン</i>
+            <% end %>
+            <%= link_to new_user_registration_path, class: "btn btn-outline-light" do %>
+              <i class="fas fa-user-plus">新規登録</i>
+            <% end %>
+          </div>
         <% end %>
       </div>
     </div>
