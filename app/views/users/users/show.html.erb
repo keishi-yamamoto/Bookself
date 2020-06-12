@@ -3,8 +3,11 @@
     <h4>
       <%= @user.name %>
       <small>@<%= @user.elastic_id %></small>
+      <% if user_signed_in? && current_user == @user %>
+        <%= link_to "情報変更", edit_user_path(@user), class: "btn btn-info"  %>
+      <% end %>
     </h4>
-  <table class="table table-borderless">
+  <table class="table table-bordered">
     <thead class="text-center">
       <tr>
         <td>所持本棚</td>
@@ -15,16 +18,29 @@
     </thead>
     <tbody class="text-center">
       <tr>
-        <td>
-          <%= link_to book_shelves_other_path(@user) do %>
-            <%= @book_shelves.count %>
-          <% end %>
-        </td>
-        <td>
-          <%= link_to user_titles_other_path(@user) do %>
-            <%= @user.user_titles.count %>
-          <% end %>
-        </td>
+        <% if user_signed_in? && current_user == @user %>
+          <td>
+            <%= link_to book_shelves_path do %>
+              <%= @user.book_shelves.count %>
+            <% end %>
+          </td>
+          <td>
+            <%= link_to user_titles_path do %>
+              <%= @user.user_titles.count %>
+            <% end %>
+          </td>
+        <% else %>
+          <td>
+            <%= link_to book_shelves_other_path(@user) do %>
+              <%= @book_shelves.count %>
+            <% end %>
+          </td>
+          <td>
+            <%= link_to user_titles_other_path(@user) do %>
+              <%= @user_titles.count %>
+            <% end %>
+          </td>
+        <% end %>
         <td>
           <%= link_to "#" do %>
           <% end %>

@@ -1,11 +1,13 @@
 class Users::UserTitlesController < ApplicationController
+  before_action :authenticate_user!, except: [:index_other, :show]
+
   def index
     @user_titles = current_user.user_titles.order('book_shelf_id desc')
   end
 
   def index_other
     @user = User.find(params[:user_id])
-    @user_titles = @user.user_titles.order('book_shelf_id desc')
+    @user_titles = @user.user_titles.joins(:book_shelf).where(book_shelves: {is_public: true}).order('book_shelf_id desc')
   end
 
   def show
@@ -17,7 +19,8 @@ class Users::UserTitlesController < ApplicationController
     if @title_count[1] == 0
       @title_count[1] = 10
     end
-    if current_user.book_shelves.present?
+    # current_userのみ編集もできるように
+    if  user_signed_in? && current_user.book_shelves.present?
       @book_shelves = current_user.book_shelves
     end
   end
@@ -79,8 +82,9 @@ class Users::UserTitlesController < ApplicationController
     current_user.user_titles.create!(
       book_shelf_id: @book_shelf.id,
       title_id: @title.id,
-      volume: "test"
+      volume: vol.to_json
     )
+    byebug
     redirect_to book_shelves_path
   end
 

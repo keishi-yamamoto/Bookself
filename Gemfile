@@ -66,6 +66,3 @@ gem 'jquery-rails'
 gem 'rakuten_web_service'
 gem 'dotenv-rails'
 gem 'data-confirm-modal'
-group :production do
-  gem 'mysql2'
-end
