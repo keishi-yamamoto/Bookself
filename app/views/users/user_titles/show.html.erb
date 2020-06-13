@@ -6,11 +6,17 @@
         <div id= "title-info" value="<%= @user_title.volumes.max %>" data="<%= @user_title.volumes_shortage.to_json %>"></div>
         <h2>
           <%= @user_title.title.name %>(<%= @user_title.volumes.count %>冊)
-          <%= link_to "削除", user_title_path, method: :delete, class:"btn btn-danger", data:
-            { confirm: "登録している各巻も全て削除されます",
-              cancel: "やめる",
-              commit: "削除する"
-            }, title: "シリーズを削除する" %>
+          <% if user_signed_in? %>
+            <% if current_user == @user_title.user %>
+              <%= link_to "削除", user_title_path, method: :delete, class:"btn btn-danger", data:
+                { confirm: "登録している各巻も全て削除されます",
+                  cancel: "やめる",
+                  commit: "削除する"
+                }, title: "シリーズを削除する" %>
+            <% else %>
+              <%= link_to "登録する", "/user_titles/new?id=#{@user_title.title.id}", class: "btn btn-info" %>
+            <% end %>
+          <% end %>
         </h2>
         <table class="table table-bordered">
           <tr>
@@ -29,8 +35,14 @@
             <th>登録本棚</th>
             <td>
               <% if @user_title.book_shelf.present? %>
-                <%= link_to book_shelf_path(@user_title.book_shelf) do %>
-                  <%= @user_title.book_shelf.name %>
+                <% if user_signed_in? && current_user == @user_title.user %>
+                  <%= link_to book_shelf_path(@user_title.book_shelf) do %>
+                    <%= @user_title.book_shelf.name %>
+                  <% end %>
+                <% else %>
+                  <%= link_to book_shelf_other_path(@user_title.book_shelf) do %>
+                    <%= @user_title.book_shelf.name %>
+                  <% end %>
                 <% end %>
               <% else %>
                 未登録
@@ -39,13 +51,12 @@
           </tr>
         </table>
       </div>
-      <%= form_with(model: @user_title, local: true) do |f| %>
-        <h3>所持巻数(色付きが所持)</h3>
-        <%# 抜け巻数を表示する %>
-        <% if @user_title.volumes_shortage.blank? %>
-          <p>1巻から<%= @user_title.volumes.max %>巻まで全て所持</p>
-        <% end %>
-        <table class="table table-sm table-bordered">
+      <h3>所持巻数(色付きが所持)</h3>
+      <%# 抜け巻数を表示する %>
+      <% if @user_title.volumes_shortage.blank? %>
+        <p>1巻から<%= @user_title.volumes.max %>巻まで全て所持</p>
+      <% end %>
+      <table class="table table-sm table-bordered">
         <% (1..@title_count[0]).each_with_index do |i| %>
           <tr>
             <% if i < @title_count[0] %>
@@ -63,8 +74,10 @@
             <% end %>
           </tr>
         <% end %>
+      </table>
+      <% if user_signed_in? && current_user == @user_title.user %>
+        <%= form_with(model: @user_title, local: true) do |f| %>
         <%= hidden_field_tag :numbers, "", {id: "numbers"} %>
-        </table>
         <label>巻数の追加(<%= @user_title.volumes.max + 1 %>巻から)</label>
         <div class="form-group">
           <%= text_field_tag :end_vol, "", {class: "form-control col-3", id: "end-volume"} %>
@@ -106,6 +119,7 @@
         <div class="form-group text-center">
           <%= f.submit "情報を変更する", class: "btn btn-success", id: "submit" %>
         </div>
+        <% end %>
       <% end %>
     </div>
   </div>

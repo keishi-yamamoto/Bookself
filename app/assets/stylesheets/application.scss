@@ -17,9 +17,16 @@
 
 header {
   background-color:#808080;
-  height:100px;
   background-size: cover;
   background-position: center;
+  padding-top: 8px;
+  height: 120px;
+  .new-book-search {
+    padding-top: 15px;
+  }
+  .nav-bar {
+    padding-top: 40px;
+  }
 }
 
 .is-valid {

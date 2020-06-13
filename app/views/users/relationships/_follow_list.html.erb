@@ -1,0 +1,43 @@
+<div class="container">
+  <h2><%= @user.name %>さんの<%= relation %>一覧</h2>
+  <div class="row">
+    <% if @users.present? %>
+      <% @users.each do |user| %>
+        <table class="table table-bordered table-hover">
+          <thead class="thead-light">
+            <tr>
+              <th>ユーザ名</th>
+              <th class="text-center" style="width:15%">所持本棚</th>
+              <th class="text-center" style="width:15%">所持タイトル</th>
+              <th class="text-center" style="width:15%">フォロー</th>
+              <th class="text-center" style="width:15%">フォロワー</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <%= link_to user_path(user) do%>
+                  <%= user.name %>
+                  <small class="text-muted">@<%= user.elastic_id %></small>
+                <% end %>
+              </td>
+              <% if current_user == user %>
+                <td class="text-center"><%= link_to user.book_shelves.count, book_shelves_path %></td>
+                <td class="text-center"><%= link_to user.user_titles.count, user_titles_path %></td>
+              <% else %>
+                <td class="text-center"><%= link_to user.book_shelves.where(is_public: true).count, book_shelves_other_path(user) %></td>
+                <td class="text-center"><%= link_to user.user_titles.joins(:book_shelf).where(book_shelves: {is_public: true}).count, user_titles_other_path(user) %></td>
+              <% end %>
+              <td class="text-center"><%= link_to user.follower.count, user_follows_path(user) %></td>
+              <td class="text-center"><%= link_to user.followed.count, user_followers_path(user) %></td>
+            </tr>
+          </tbody>
+        </table>
+      <% end %>
+    <% else %>
+      <div class="offset-1">
+      <b>まだ<%= relation %>はいません</b>
+      </div>
+    <% end %>
+  </div>
+</div>

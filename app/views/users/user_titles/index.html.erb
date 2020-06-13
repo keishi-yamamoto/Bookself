@@ -8,7 +8,7 @@
           <th>著者</th>
           <th>出版社</th>
           <th class="text-center" style="width: 10%">所持巻数</th>
-          <th class="text-center" style="width: 10%">登録本棚</th>
+          <th class="text-center" style="width: 15%">登録本棚</th>
         </tr>
       </thead>
       <tbody>
@@ -22,6 +22,11 @@
               <td class="text-center">
                 <% if user_title.book_shelf %>
                   <%= user_title.book_shelf.name %>
+                  <% if user_title.book_shelf.is_public %>
+                    <i class="fas fa-unlock"></i>
+                  <% else %>
+                    <i class="fas fa-lock"></i>
+                  <% end %>
                 <% else %>
                   未登録
                 <% end %>
