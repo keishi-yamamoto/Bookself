@@ -11,9 +11,12 @@ class Users::SearchController < ApplicationController
       keyword = params[:keyword_new].strip
       uri = URI.parse(URI.encode("https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&title=#{keyword}&outOfStockFlag=1&sort=-releaseDate&formatVersion=2&applicationId=#{ENV['RWS_APPLICATION_ID']}"))
       json = Net::HTTP.get(uri)
-      @results = date_prefix(JSON.parse(json))
-      sort_by_date(@results)
-      split_title(@items)
+      # api側のエラーの場合も検索結果0を返す
+      unless JSON.parse(json)["error"].present?
+        @results = date_prefix(JSON.parse(json))
+        sort_by_date(@results)
+        split_title(@items)
+      end
     end
     render :index
   end
@@ -96,9 +99,10 @@ class Users::SearchController < ApplicationController
       results['Items'].each do |item|
         # salesDateを取り出してその文字列に対してregex
         date = item['salesDate']
-        date = date.gsub(/頃/,'')
+        date = date.gsub(/頃|下旬|中旬|上旬/,'')
         date = date.gsub(/\A\d{4}.\z/,'\&1月')
         date = date.gsub(/\A\d{4}.\d{2}.\z/,'\&1日')
+        date = date.gsub(/\A\d{4}.\d{1}.\z/,'\&1日')
         date = Date.strptime(date, '%Y年%m月%d日')
         item['salesDate'] = date
       end
