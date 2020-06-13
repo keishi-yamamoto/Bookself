@@ -23,7 +23,7 @@
             <% @results[0].each do |title| %>
             <tbody>
               <tr>
-                <td colspan="2"><%= title.name %></td>
+                <td colspan="2"><%= link_to title.name, "/user_titles/new?id=#{title.id}" %></td>
                 <td><%= title.author %></td>
                 <td><%= title.publisher %></td>
                 <td class="text-center">
@@ -57,30 +57,15 @@
                       <small class="text-muted">@<%= user.elastic_id %></small>
                     <% end %>
                   </td>
-                  <td class="text-center">
-                    <% if current_user == user %>
-                      <%= user.book_shelves.count %>
-                    <% else %>
-                      <%= user.book_shelves.where(is_public: true).count %>
-                    <% end %>
-                  </td>
-                  <td class="text-center">
-                    <% if current_user == user %>
-                      <%= user.user_titles.count %>
-                    <% else%>
-                      <%= user.user_titles.joins(:book_shelf).where(book_shelves: {is_public: true}).count %>
-                    <% end %>
-                  </td>
-                  <td class="text-center">
-                    <%= link_to "#" do %>
-                      0
-                    <% end %>
-                  </td>
-                  <td class="text-center">
-                    <%= link_to "#" do %>
-                      0
-                    <% end %>
-                  </td>
+                  <% if current_user == user %>
+                    <td class="text-center"><%= link_to user.book_shelves.count, book_shelves_path %></td>
+                    <td class="text-center"><%= link_to user.user_titles.count, user_titles_path %></td>
+                  <% else %>
+                    <td class="text-center"><%= link_to user.book_shelves.where(is_public: true).count, book_shelves_other_path(user) %></td>
+                    <td class="text-center"><%= link_to user.user_titles.joins(:book_shelf).where(book_shelves: {is_public: true}).count, user_titles_other_path(user) %></td>
+                  <% end %>
+                  <td class="text-center"><%= link_to user.follower.count, user_follows_path(user) %></td>
+                  <td class="text-center"><%= link_to user.followed.count, user_followers_path(user) %></td>
                 </tr>
               </tbody>
             <% end %>

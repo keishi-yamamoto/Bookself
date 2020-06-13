@@ -7,6 +7,11 @@
         <% if current_user == @user %>
           <%= link_to "情報変更", edit_user_path(@user), class: "btn btn-info"  %>
         <% else %>
+          <% if current_user.following?(@user) %>
+            <%= link_to "フォロー解除", user_relationships_path(@user), method: :delete, class: "btn btn-primary" %>
+          <% else %>
+            <%= link_to "フォローする", user_relationships_path(@user), method: :post, class: "btn btn-success" %>
+          <% end %>
         <% end %>
       <% end %>
     </h4>
@@ -22,36 +27,14 @@
     <tbody class="text-center">
       <tr>
         <% if user_signed_in? && current_user == @user %>
-          <td>
-            <%= link_to book_shelves_path do %>
-              <%= @user.book_shelves.count %>
-            <% end %>
-          </td>
-          <td>
-            <%= link_to user_titles_path do %>
-              <%= @user.user_titles.count %>
-            <% end %>
-          </td>
+          <td><%= link_to @user.book_shelves.count, book_shelves_path %></td>
+          <td><%= link_to @user.user_titles.count, user_titles_path%></td>
         <% else %>
-          <td>
-            <%= link_to book_shelves_other_path(@user) do %>
-              <%= @book_shelves.count %>
-            <% end %>
-          </td>
-          <td>
-            <%= link_to user_titles_other_path(@user) do %>
-              <%= @user_titles.count %>
-            <% end %>
-          </td>
+          <td><%= link_to @book_shelves.count, book_shelves_other_path(@user) %></td>
+          <td><%= link_to @user_titles.count, user_titles_other_path(@user) %></td>
         <% end %>
-        <td>
-          <%= link_to "#" do %>
-          <% end %>
-        </td>
-        <td>
-          <%= link_to "#" do %>
-          <% end %>
-        </td>
+          <td><%= link_to @user.follower.count, user_follows_path(@user) %></td>
+          <td><%= link_to @user.followed.count, user_followers_path(@user) %></td>
       </tr>
     </tbody>
   </table>

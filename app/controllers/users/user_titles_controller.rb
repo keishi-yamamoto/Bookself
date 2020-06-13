@@ -29,6 +29,9 @@ class Users::UserTitlesController < ApplicationController
     # 新規登録書籍かどうかの分岐
     if params[:id]
       @book = Title.find(params[:id])
+      if current_user.user_titles.find_by(title_id: @book.id).present?
+        redirect_to user_title_path(current_user.user_titles.find_by(title_id: @book.id))
+      end
     else
       @title = params[:title]
       # 登録する書籍が既に存在するかどうかチェック
@@ -84,7 +87,6 @@ class Users::UserTitlesController < ApplicationController
       title_id: @title.id,
       volume: vol.to_json
     )
-    byebug
     redirect_to book_shelves_path
   end
 

@@ -20,31 +20,15 @@
                 <small class="text-muted">@<%= user_title.user.elastic_id %></small>
               <% end %>
             </td>
-            <td class="text-center">
-              <%# 他のユーザからは公開本棚しかみえないように %>
-              <% if user_signed_in? && current_user == user_title.user %>
-                <%= user_title.user.book_shelves.count %>
-              <% else %>
-                <%= user_title.user.book_shelves.where(is_public: true).count %>
-              <% end %>
-            </td>
-            <td class="text-center">
-              <% if user_signed_in? && current_user == user_title.user %>
-                <%= user_title.user.user_titles.count %>
-              <% else%>
-                <%= user_title.user.user_titles.joins(:book_shelf).where(book_shelves: {is_public: true}).count %>
-              <% end %>
-            </td>
-            <td class="text-center">
-              <%= link_to "#" do %>
-                0
-              <% end %>
-            </td>
-            <td class="text-center">
-              <%= link_to "#" do %>
-                0
-              <% end %>
-            </td>
+            <% if user_signed_in? && current_user == user_title.user %>
+              <td class="text-center"><%= user_title.user.book_shelves.count %></td>
+              <td class="text-center"><%= user_title.user.user_titles.count %></td>
+            <% else %>
+              <td class="text-center"><%= user_title.user.book_shelves.where(is_public: true).count %></td>
+              <td class="text-center"><%= user_title.user.user_titles.joins(:book_shelf).where(book_shelves: {is_public: true}).count %></td>
+            <% end %>
+            <td class="text-center"><%= user_title.user.follower.count %></td>
+            <td class="text-center"><%= user_title.user.followed.count %></td>
           </tr>
         <% end %>
       </tbody>
