@@ -1,4 +1,7 @@
 document.addEventListener('turbolinks:load', function () { 
+  const button = document.getElementById('submit');
+  button.disabled = true;
+  const flag = [0,0,0]
   // nameフォームの文字数カウント
   let name = document.getElementById('user_name');
   let count = document.getElementById('name_count');
@@ -7,9 +10,13 @@ document.addEventListener('turbolinks:load', function () {
     if(this.value.length <= 20) {
       count.classList.remove('is-invalid');
       count.classList.add('is-valid');
+      flag[ 0 ] = 1;
+      submit();
     } else {
       count.classList.remove('is-valid');
-      count.classList.add('is-invalid');
+      count.classEList.add('is-invalid');
+      flag[ 0 ] = 0;
+      submit();
     }
   });
 
@@ -32,10 +39,14 @@ document.addEventListener('turbolinks:load', function () {
           if (xhr.response == 'false') {
             id_text.classList.remove('is-invalid');
             id_text.classList.add('is-valid');
+            flag[ 1 ] = 1;
+            submit();
             id_text.textContent = "このIDは使用可能です";
           } else {
             id_text.classList.remove('is-valid');
             id_text.classList.add('is-invalid');
+            flag[ 1 ] = 0;
+            submit();
             id_text.textContent = "このIDは既に使われています"
           }
         } else {
@@ -64,15 +75,21 @@ document.addEventListener('turbolinks:load', function () {
             if (regexp.test(email.value)) {
               email_text.classList.remove('is-invalid');
               email_text.classList.add('is-valid');
+              flag[ 2 ] = 1;
+              submit();
               email_text.textContent = "このメールアドレスは使用可能です";
             } else {
               email_text.classList.remove('is-valid');
               email_text.classList.add('is-invalid');
+              flag[ 2 ] = 0;
+              submit();
               email_text.textContent = "メールアドレスを入力してください"
             }
           } else {
             email_text.classList.remove('is-valid');
             email_text.classList.add('is-invalid');
+            flag[ 2 ] = 0;
+            submit();
             email_text.textContent = "このメールアドレスは既に使われています"
           }
         } else {
@@ -81,4 +98,11 @@ document.addEventListener('turbolinks:load', function () {
       }
     };
   }, false);
+  function submit() {
+    if (flag[0] == 1 && flag[1] == 1 && flag[2] == 1) {
+      button.disabled = false;
+    } else {
+      button.disabled = true;
+    }
+  }
 });
