@@ -1,11 +1,17 @@
 class Users::UsersController < ApplicationController
-  before_action :authenticate_user!, only: [:edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:home, :notification, :edit, :update, :destroy]
 
   def top
     @new_titles = Title.all.order('id desc').take(10)
   end
 
   def about
+  end
+
+  def home
+  end
+
+  def notification
   end
 
   def search

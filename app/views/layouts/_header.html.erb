@@ -18,13 +18,19 @@
       </div>
       <div>
         <% if user_signed_in? %>
-          <div class="form-group form-inline nav-bar float-right">
-            <%= link_to user_path(current_user), class: "btn btn-outline-light mx-3" do %>
+          <div class="form-group form-inline nav-bar">
+            <%= link_to user_home_path, class: "btn btn-outline-light mx-2" do %>
+              <i class="fas fa-home">ホーム</i>
+            <% end %>
+            <%= link_to user_path(current_user), class: "btn btn-outline-light mx-2" do %>
               <i class="fas fa-address-card">マイページ</i>
+            <% end %>
+            <%= link_to user_notification_path, class: "btn btn-outline-light mx-2" do %>
+              <i class="fas fa-bell">通知</i>
             <% end %>
             <%= form_tag(search_results_path, method: :get) do %>
               <%= text_field_tag :keyword_db, params[:keyword_db], placeholder: "ユーザ・書籍検索", class: "form-control" %>
-              <%= submit_tag "検索", class: "btn btn-outline-light mx-3 " %>
+              <%= submit_tag "検索", class: "btn btn-outline-light mx-2" %>
             <% end %>
             <%= link_to  destroy_user_session_path, method: :delete, class: "btn btn-outline-light" do %>
               <i class="fas fa-sign-out-alt">ログアウト</i>
