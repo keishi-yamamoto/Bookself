@@ -11,27 +11,60 @@ document.addEventListener('turbolinks:load', function () {
   td = [];
   // 全巻数の所持フラグ
   data = [];
-  for (let i = 1; i <= maxVol; i++) {
-    td[ i ] = document.getElementById('number-' + i);
-    // 抜け巻数リストに含まれていたら未所持状態に変える
-    if (volShortage.includes(i)) {
-      td[ i ].classList.remove('table-primary');
-      data[ i - 1 ] = 0;
-    } else {
-      data[ i - 1 ] = 1;
-    }
-  };
+  function setValue(option) {
+    for (let i = 1; i <= maxVol; i++) {
+      td[ i ] = document.getElementById('number-' + i);
+      if (option == 'default') {
+        // 抜け巻数リストに含まれていたら未所持状態に変える
+        if (volShortage.includes(i)) {
+          td[ i ].classList.remove('table-danger');
+          td[ i ].classList.remove('table-primary');
+          data[ i - 1 ] = 0;
+        } else {
+          data[ i - 1 ] = 1;
+        }
+      } else {
+        if (volShortage.includes(i)) {
+          td[ i ].classList.add('table-danger');
+        } else {
+          td[ i ].classList.add('table-primary');
+        }
+        data[ i - 1 ] = 1;
+      }
+    };
+  }
+  setValue('default');
   numbers = document.getElementById('numbers')
   numbers.value = JSON.stringify(data);
+  // 一括変更ボタン
+  changeButton = document.getElementById('change-button')
+  changeButton.addEventListener('click', function () {
+    if (this.getAttribute('flag') == 0) {
+      setValue('change');
+      numbers.value = JSON.stringify(data);
+      this.setAttribute('flag', 1);
+      this.textContent = "元の状態に戻す";
+    } else {
+      setValue('default');
+      numbers.value = JSON.stringify(data);
+      this.setAttribute('flag', 0);
+      this.textContent = "一括登録";
+    }
+  })
   // クリックで色と所持しているどうかのvalueを切り替える
   for (let i = 1; i <= maxVol; i++) {
     td[ i ].addEventListener('click', function () {
-      if (data[i - 1] == 0) {
-        td[ i ].classList.add('table-primary');
+      if (data[ i - 1 ] == 0) {
+        if (volShortage.includes(i)) {
+          td[ i ].classList.add('table-danger');
+        } else {
+          td[ i ].classList.add('table-primary');
+        }
         data[ i - 1 ] = 1;
         numbers.value = JSON.stringify(data);
       } else {
         td[ i ].classList.remove('table-primary');
+        td[ i ].classList.remove('table-danger');
         data[ i - 1 ] = 0;
         numbers.value = JSON.stringify(data);
       }
