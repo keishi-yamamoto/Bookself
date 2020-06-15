@@ -9,9 +9,11 @@ class Users::UsersController < ApplicationController
   end
 
   def home
+    @users = current_user.follower
   end
 
   def notification
+    @users = current_user.follower
   end
 
   def search

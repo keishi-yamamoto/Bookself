@@ -37,4 +37,12 @@ class User < ApplicationRecord
     end
     results
   end
+
+  # home/notificationに表示するためのコンテンツ
+  def contents
+    contents = []
+    contents += user_titles.order('id desc')
+    contents = contents.sort_by {|v| v.created_at}
+    contents.reverse
+  end
 end
