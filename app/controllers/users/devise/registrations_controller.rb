@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Users::Devise::RegistrationsController < Devise::RegistrationsController
-  skip_before_filter :require_no_authentication
+  before_action :require_no_authentication
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
   before_action :create_random_eid
