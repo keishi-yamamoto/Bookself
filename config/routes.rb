@@ -37,6 +37,8 @@ Rails.application.routes.draw do
     get 'users/search_id'
     get 'users/search_mail'
     get 'users/search'
+    get 'users/home', as: "user_home"
+    get 'users/notification', as: "user_notification"
     resources :users, except: [:index, :create, :new] do
       # フォロー機能に関わるアクション
       resource :relationships, only: [:create, :destroy]

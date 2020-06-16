@@ -51,7 +51,13 @@
           </tr>
         </table>
       </div>
-      <h3>所持巻数(色付きが所持)</h3>
+      <h3>
+        所持巻数一覧
+        <button class="btn btn-warning" id="change-button" flag=0>一括登録</button>
+      </h3>
+      <small class="text-muted">クリックで情報を変更できます。</small>
+      <small class="text-primary mx-sm-1">登録済み</small>
+      <small class="text-danger">新規登録</small>
       <%# 抜け巻数を表示する %>
       <% if @user_title.volumes_shortage.blank? %>
         <p>1巻から<%= @user_title.volumes.max %>巻まで全て所持</p>
