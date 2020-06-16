@@ -10,6 +10,7 @@ class Users::UsersController < ApplicationController
 
   def home
     @users = current_user.follower
+    @contents = current_user.follower_contents
   end
 
   def notification

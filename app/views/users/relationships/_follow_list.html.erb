@@ -2,17 +2,17 @@
   <h2><%= @user.name %>さんの<%= relation %>一覧</h2>
   <div class="row">
     <% if @users.present? %>
-      <% @users.each do |user| %>
-        <table class="table table-bordered table-hover">
-          <thead class="thead-light">
-            <tr>
-              <th>ユーザ名</th>
-              <th class="text-center" style="width:15%">所持本棚</th>
-              <th class="text-center" style="width:15%">所持タイトル</th>
-              <th class="text-center" style="width:15%">フォロー</th>
-              <th class="text-center" style="width:15%">フォロワー</th>
-            </tr>
-          </thead>
+      <table class="table table-bordered table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th>ユーザ名</th>
+            <th class="text-center" style="width:15%">所持本棚</th>
+            <th class="text-center" style="width:15%">所持タイトル</th>
+            <th class="text-center" style="width:15%">フォロー</th>
+            <th class="text-center" style="width:15%">フォロワー</th>
+          </tr>
+        </thead>
+        <% @users.each do |user| %>
           <tbody>
             <tr>
               <td>
@@ -32,8 +32,8 @@
               <td class="text-center"><%= link_to user.followed.count, user_followers_path(user) %></td>
             </tr>
           </tbody>
-        </table>
-      <% end %>
+        <% end %>
+      </table>
     <% else %>
       <div class="offset-1">
       <b>まだ<%= relation %>はいません</b>

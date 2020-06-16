@@ -39,9 +39,11 @@ class User < ApplicationRecord
   end
 
   # home/notificationに表示するためのコンテンツ
-  def contents
+  def follower_contents
     contents = []
-    contents += user_titles.order('id desc')
+    # postsを入れるならここに+
+    # 自分のfollowerのUserTitle
+    contents += UserTitle.joins(:user).where(users:{id:following_user})
     contents = contents.sort_by {|v| v.created_at}
     contents.reverse
   end
