@@ -20,6 +20,11 @@
         </div>
 
         <div class="form-group row">
+          <%= f.label "通知コンテンツ", class:"col-5 col-form-label" %>
+          <%= f.select :notification_type, [['新規フォロワー・フォロワーの投稿', 0], ['新規フォロワーのみ', 1], ['フォロワーの投稿のみ', 2]], {}, {class: "col-7 form-control"} %>
+        </div>
+
+        <div class="form-group row">
             <%= f.submit "情報変更", class: "btn btn-info offset-5 col-2" %>
         </div>
 

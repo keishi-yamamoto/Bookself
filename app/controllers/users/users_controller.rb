@@ -9,12 +9,19 @@ class Users::UsersController < ApplicationController
   end
 
   def home
-    @users = current_user.follower
-    @contents = current_user.follower_contents
+    @users = current_user.follower_user
+    @contents = current_user.contents
   end
 
   def notification
-    @users = current_user.follower
+    @users = current_user.follower_user.order('created_at desc')
+    @contents = current_user.contents
+    @users_today = range_contents(@users, 0)
+    @contents_today = range_contents(@contents, 0)
+    @users_weekly = range_contents(@users, 7) - @users_today
+    @contents_weekly = range_contents(@contents, 7) - @contents_today
+    @users_monthly = range_contents(@users, 30) - range_contents(@users, 7)
+    @contents_monthly = range_contents(@contents, 30) - range_contents(@contents, 7)
   end
 
   def search
@@ -64,6 +71,22 @@ class Users::UsersController < ApplicationController
 
   private
   def user_params
-    params.require(:user).permit(:id, :name, :elastic_id, :email, :encrypted_password)
+    params.require(:user).permit(:id, :name, :elastic_id, :notification_type)
+  end
+
+  # start日前から今までのコンテンツを取り出す
+  def range_contents(contents, start)
+    results = []
+    i = 0
+    contents.count.times do
+      content = contents[i]
+      if content.created_at.between?((start).days.ago.midnight, Time.now)
+        results.push(content)
+      else
+        break
+      end
+      i += 1
+    end
+    results
   end
 end

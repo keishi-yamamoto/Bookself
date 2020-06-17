@@ -39,11 +39,11 @@ class User < ApplicationRecord
   end
 
   # home/notificationに表示するためのコンテンツ
-  def follower_contents
-    contents = []
-    # postsを入れるならここに+
-    # 自分のfollowerのUserTitle
-    contents += UserTitle.joins(:user).where(users:{id:following_user})
+  def contents
+    # 自分のuser_titles
+    contents = user_titles
+    # 自分のfollowerのUserTitle(本棚が公開のもの)
+    contents += UserTitle.joins(:user).where(users:{id:following_user}).joins(:book_shelf).where(book_shelves: {is_public: true})
     contents = contents.sort_by {|v| v.created_at}
     contents.reverse
   end
