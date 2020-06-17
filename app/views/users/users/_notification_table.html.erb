@@ -1,0 +1,50 @@
+<table class="table table-bordered">
+  <tbody>
+    <% if users && current_user.notification_type != 2 %>
+      <% users.each do |user| %>
+        <tr class="table-info">
+          <td class="text-center" style="width:10%">フォロワー</td>
+          <td style="width:20%">
+            <%= link_to user_path(user), class: "text-body" do %>
+              <u><%= user.name %><small>@<%= user.elastic_id %></small></u>
+            <% end %>
+          </td>
+          <td class="text-center">
+            <%= link_to user_follows_path(user), class: "text-body" do %>
+              <u>フォロー:<%= user.follower.count %></u>
+            <% end %>
+          </td>
+          <td class="text-center text-body">
+            <%= link_to user_followers_path(user), class: "text-body" do %>
+              <u>フォロワー:<%= user.followed.count %></u>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+    <% if contents && current_user.notification_type != 1 %>
+      <% contents.each do |content| %>
+        <% if content.class.name == "UserTitle" %>
+          <tr class="table-active">
+            <td class="text-center" style="width:10%">書籍</td>
+            <td style="width:20%">
+              <%= link_to user_path(content.user), class: "text-body" do %>
+                <u><%= content.user.name %><small>@<%= content.user.elastic_id %></small></u>
+              <% end %>
+            </td>
+            <td colspan="2">
+              <%= link_to user_title_path(content), class: "text-body" do %>
+                <u><%= content.title.name %>(<%= content.volumes.count %>冊)</u>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+<% if contents.blank? && users.blank? %>
+  <p>この期間の新着通知はありません</p>
+  <%# 改行させるための空のテーブル %>
+  <table class="table"></table>
+<% end %>

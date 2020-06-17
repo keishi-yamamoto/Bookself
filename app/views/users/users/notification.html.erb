@@ -1,5 +1,13 @@
 <div class="container">
   <div class="row">
-  <h3>6/16開発中機能</h3>
+    <h3>
+      <i class="fas fa-bell">通知</i><br>
+      今日
+    </h3>
+    <%= render 'notification_table', contents: @contents_today, users: @users_today %>
+    <h3>一週間</h3>
+    <%= render 'notification_table', contents: @contents_weekly, users: @users_weekly %>
+    <h3>一ヶ月</h3>
+    <%= render 'notification_table', contents: @contentes_monthly, users: @users_monthly %>
   </div>
 </div>

@@ -29,6 +29,18 @@ header {
   }
 }
 
+footer {
+  background-color:#808080;
+  background-size: cover;
+  background-position: center;
+  height: 100px;
+  position: relative;
+  .info {
+    position: absolute;
+    bottom: 0;
+  }
+}
+
 .is-valid {
   color: #28a745;
 }

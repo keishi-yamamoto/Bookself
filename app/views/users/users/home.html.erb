@@ -1,26 +1,27 @@
 <div class="container">
   <div class="row">
-  <h3>6/16開発中機能</h3>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </thead>
-        <% @contents.each do |content| %>
-          <%# contentのoptionカラムで場合分け %>
-          <tbody>
-            <tr>
-              <td><%= content.user.name %></td>
-              <td><%= content.title.name %></td>
-              <td></td>
-              <td><%= content.created_at %></td>
+  <h3><i class="fas fa-home">ホーム</i></h3>
+    <table class="table table-bordered">
+      <% @contents.each do |content| %>
+        <tbody>
+          <% if content.class.name == "UserTitle" %>
+            <tr class="table-active">
+              <td class="text-center" style="width:6%">書籍</td>
+              <td>
+                <%= link_to user_path(content.user), class: "text-body" do %>
+                  <u><%= content.user.name %><small>@<%= content.user.elastic_id %></small></u>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to user_title_path(content), class: "text-body" do %>
+                  <u><%= content.title.name %>(<%= content.volumes.count %>冊)</u>
+                <% end %>
+              </td>
+              <td style="width:15%"><%= content.created_at.strftime("%Y-%m-%d-%H-%S") %></td>
             </tr>
-          </tbody>
-        <% end %>
-      </table>
+          <% end %>
+        </tbody>
+      <% end %>
+    </table>
   </div>
 </div>
