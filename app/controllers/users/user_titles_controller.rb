@@ -1,5 +1,7 @@
 class Users::UserTitlesController < ApplicationController
   before_action :authenticate_user!, except: [:index_other, :show]
+  before_action :bookshelf_validation, only: [:create, :update]
+  before_action :usertitle_validation, only: [:create]
 
   def index
     @user_titles = current_user.user_titles.order('book_shelf_id desc')
@@ -111,7 +113,7 @@ class Users::UserTitlesController < ApplicationController
     if params[:option] == "choice"
       @book_shelf = BookShelf.find(params[:user_title][:book_shelf_id])
     else
-      current_user.book_shelves.create!(name: params[:name])
+      current_user.book_shelves.create(name: params[:name])
       @book_shelf = current_user.book_shelves.last
     end
     @user_title.update(
@@ -137,5 +139,25 @@ class Users::UserTitlesController < ApplicationController
     @user_title = UserTitle.find(params[:id])
     @user_title.destroy!
     redirect_to user_titles_path
+  end
+
+  private
+  # newアクションにおいて受け渡されるパラメータが多いためcreateアクション前にバリデーションをする。
+  def bookshelf_validation
+    unless params[:option] == "choice"
+      unless params[:name].present?
+        flash[:notice] = "本棚名が入力されていません"
+        redirect_back(fallback_location: root_path)
+      end
+    end
+  end
+
+  def usertitle_validation
+    unless params[:user_title][:id]
+      unless params[:user_title][:name].present?
+        flash[:notice] = "書籍名が入力されていません"
+        redirect_back(fallback_location: root_path)
+      end
+    end
   end
 end
