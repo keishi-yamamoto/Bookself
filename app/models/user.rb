@@ -9,6 +9,9 @@ class User < ApplicationRecord
   has_many :posts, dependent: :nullify
   has_many :user_titles, dependent: :destroy
 
+  validates :name, length: { maximum: 20 }
+  validates :elastic_id, uniqueness: true 
+
     # フォロー機能部分
   has_many :follower, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy # フォロー取得
   has_many :followed, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy # フォロワー取得

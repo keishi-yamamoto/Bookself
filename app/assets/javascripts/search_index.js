@@ -17,10 +17,8 @@ document.addEventListener('turbolinks:load', function () {
       search(i);
     });
   };
-  const test = document.getElementById('book-title-2');
   function search(i) {
     // モーダルの表示文
-    const body = document.getElementById('modal-text');
     const url = '/search/book_title?title=' + data[ i ];
     const xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);

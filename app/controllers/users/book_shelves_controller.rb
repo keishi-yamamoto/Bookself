@@ -27,8 +27,13 @@ class Users::BookShelvesController < ApplicationController
       end
       redirect_to book_shelf_path(@book_shelf)
     else
-      current_user.book_shelves.create!(name: params[:book_shelf][:name])
-      redirect_to book_shelves_path
+      if params[:book_shelf][:name].present?
+        current_user.book_shelves.create!(name: params[:book_shelf][:name])
+        redirect_to book_shelves_path
+      else
+        flash[:notice] = "本棚名が入力されていません"
+        redirect_back(fallback_location: root_path)
+      end
     end
   end
 

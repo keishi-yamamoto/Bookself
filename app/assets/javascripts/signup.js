@@ -1,6 +1,6 @@
 document.addEventListener('turbolinks:load', function () { 
   const button = document.getElementById('submit');
-  const flag = [0,0,0]
+  const flag = [0,1,0]
   // nameフォームの文字数カウント
   let name = document.getElementById('user_name');
   let count = document.getElementById('name_count');
