@@ -53,6 +53,6 @@ class User < ApplicationRecord
 
   # 公開設定になっている全ての本棚に含まれるuser_titles
   def public_user_titles
-    UserTitles.joins(:book_shelf).where(book_shelves: {is_public: true})
+    UserTitle.joins(:book_shelf).where(book_shelves: {is_public: true})
   end
 end
