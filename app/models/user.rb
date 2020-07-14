@@ -50,4 +50,9 @@ class User < ApplicationRecord
     contents = contents.sort_by {|v| v.created_at}
     contents.reverse
   end
+
+  # 公開設定になっている全ての本棚に含まれるuser_titles
+  def public_user_titles
+    UserTitles.joins(:book_shelf).where(book_shelves: {is_public: true})
+  end
 end
