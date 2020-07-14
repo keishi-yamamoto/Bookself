@@ -9,7 +9,7 @@ class Users::UserTitlesController < ApplicationController
 
   def index_other
     @user = User.find(params[:user_id])
-    @user_titles = @user.user_titles.joins(:book_shelf).where(book_shelves: {is_public: true}).order('book_shelf_id desc')
+    @user_titles = @user.public_user_titles
   end
 
   def show

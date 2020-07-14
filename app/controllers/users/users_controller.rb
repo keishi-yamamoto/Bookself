@@ -33,7 +33,7 @@ class Users::UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @book_shelves = @user.book_shelves.where(is_public: true)
-    @user_titles = @user.user_titles.joins(:book_shelf).where(book_shelves: {is_public: true})
+    @user_titles = @user.public_user_titles
   end
 
   def edit

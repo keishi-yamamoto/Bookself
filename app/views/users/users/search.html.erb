@@ -25,7 +25,7 @@
               <td class="text-center"><%= user_title.user.user_titles.count %></td>
             <% else %>
               <td class="text-center"><%= user_title.user.book_shelves.where(is_public: true).count %></td>
-              <td class="text-center"><%= user_title.user.user_titles.joins(:book_shelf).where(book_shelves: {is_public: true}).count %></td>
+              <td class="text-center"><%= user_title.user.public_user_titles.count %></td>
             <% end %>
             <td class="text-center"><%= user_title.user.follower.count %></td>
             <td class="text-center"><%= user_title.user.followed.count %></td>
