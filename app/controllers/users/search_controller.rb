@@ -57,37 +57,38 @@ class Users::SearchController < ApplicationController
     # id検索をした際に@を半角に整形
     keyword.gsub(/＠/,"@")
     # Title,Userそれぞれの結果を入れるための形で配列を生成
-    @results = [[],[]]
+    @title_results = []
+    @user_results = []
     # タイトルあいまい検索
-    results_titles = Title.where('name like ?', "%#{keyword}%")
-    if results_titles.present?
+    title_results = Title.where('name like ?', "%#{keyword}%")
+    if title_results.present?
       i = 0
-      results_titles.count.times do
-        @results[0].push(results_titles[i])
+      title_results.count.times do
+        @title_results.push(title_results[i])
         i += 1
       end
-      @results[0].uniq!
+      @title_results.uniq!
     end
     # ユーザ名あいまい検索
-    results_users = User.where('name like ?', "%#{keyword}%")
-    if results_users.present?
+    user_results = User.where('name like ?', "%#{keyword}%")
+    if user_results.present?
       i = 0
-      results_users.count.times do
-        @results[1].push(results_users[i])
+      user_results.count.times do
+        @user_results.push(user_results[i])
         i += 1
       end
     end
     # ユーザidあいまい検索
     if keyword[0] == "@"
-      results_users_by_id = User.where('elastic_id like ?', "%#{keyword[1,keyword.length]}%")
+      user_results_by_id = User.where('elastic_id like ?', "%#{keyword[1,keyword.length]}%")
       i = 0
-      results_users_by_id.count.times do
-        @results[1].push(results_users_by_id[i])
+      user_results_by_id.count.times do
+        @user_results.push(user_results_by_id[i])
         i += 1
       end
     end
-    unless @results[1].blank?
-      @results[1].uniq!
+    unless @user_results.blank?
+      @user_results.uniq!
     end
     render :total
   end
